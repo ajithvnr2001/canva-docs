@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/snowpipe-streaming/",
+  "file": "blog/engineering/snowpipe-streaming.md",
+  "title": "The foundations of Canva\u2019s continuous data platform with Snowpipe Streaming - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:16.893310+00:00",
+  "html_len": 85515,
+  "md_len": 22496,
+  "depth": 0
+}

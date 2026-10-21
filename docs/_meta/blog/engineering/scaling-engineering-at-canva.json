@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/scaling-engineering-at-canva/",
+  "file": "blog/engineering/scaling-engineering-at-canva.md",
+  "title": "Scaling engineering at Canva - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:16.135516+00:00",
+  "html_len": 75013,
+  "md_len": 21490,
+  "depth": 0
+}

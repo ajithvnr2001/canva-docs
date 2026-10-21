@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/computer-vision/",
+  "file": "blog/engineering/tag/computer-vision.md",
+  "title": "Computer Vision - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:18.686446+00:00",
+  "html_len": 32701,
+  "md_len": 2001,
+  "depth": 0
+}

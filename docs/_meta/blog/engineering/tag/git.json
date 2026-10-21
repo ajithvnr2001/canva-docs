@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/git/",
+  "file": "blog/engineering/tag/git.md",
+  "title": "Git - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:21.967552+00:00",
+  "html_len": 30319,
+  "md_len": 1535,
+  "depth": 0
+}

@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/understanding-a-diverse-user-base-with-frequency-segmentation-at-scale/",
+  "file": "blog/engineering/understanding-a-diverse-user-base-with-frequency-segmentation-at-scale.md",
+  "title": "Understanding a Diverse User Base with Frequency Segmentation at Scale - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:29.004688+00:00",
+  "html_len": 76039,
+  "md_len": 21830,
+  "depth": 0
+}

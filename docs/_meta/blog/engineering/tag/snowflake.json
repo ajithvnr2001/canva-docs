@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/snowflake/",
+  "file": "blog/engineering/tag/snowflake.md",
+  "title": "Snowflake - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:26.426203+00:00",
+  "html_len": 30077,
+  "md_len": 1396,
+  "depth": 0
+}

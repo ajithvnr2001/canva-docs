@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/redis/",
+  "file": "blog/engineering/tag/redis.md",
+  "title": "Redis - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:25.349873+00:00",
+  "html_len": 30692,
+  "md_len": 1410,
+  "depth": 0
+}

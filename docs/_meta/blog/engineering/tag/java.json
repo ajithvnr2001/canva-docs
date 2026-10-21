@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/java/",
+  "file": "blog/engineering/tag/java.md",
+  "title": "Java - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:22.710399+00:00",
+  "html_len": 31973,
+  "md_len": 1653,
+  "depth": 0
+}

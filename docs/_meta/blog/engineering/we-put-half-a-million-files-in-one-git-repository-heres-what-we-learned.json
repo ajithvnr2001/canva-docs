@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/we-put-half-a-million-files-in-one-git-repository-heres-what-we-learned/",
+  "file": "blog/engineering/we-put-half-a-million-files-in-one-git-repository-heres-what-we-learned.md",
+  "title": "We Put Half a Million files in One git Repository, Here's What We Learned - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:28.852102+00:00",
+  "html_len": 65305,
+  "md_len": 13375,
+  "depth": 0
+}

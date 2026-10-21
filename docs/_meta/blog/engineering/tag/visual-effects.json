@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/visual-effects/",
+  "file": "blog/engineering/tag/visual-effects.md",
+  "title": "Visual Effects - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:28.004555+00:00",
+  "html_len": 30259,
+  "md_len": 1425,
+  "depth": 0
+}

@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/canvas-compute-backend/",
+  "file": "blog/engineering/canvas-compute-backend.md",
+  "title": "Canva's compute backend - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:11.580367+00:00",
+  "html_len": 61836,
+  "md_len": 14504,
+  "depth": 0
+}

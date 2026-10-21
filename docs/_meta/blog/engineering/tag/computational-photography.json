@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/computational-photography/",
+  "file": "blog/engineering/tag/computational-photography.md",
+  "title": "Computational Photography - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:18.751798+00:00",
+  "html_len": 30604,
+  "md_len": 1660,
+  "depth": 0
+}

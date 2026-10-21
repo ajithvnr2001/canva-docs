@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/kubernetes/",
+  "file": "blog/engineering/tag/kubernetes.md",
+  "title": "Kubernetes - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:22.802710+00:00",
+  "html_len": 30659,
+  "md_len": 1522,
+  "depth": 0
+}

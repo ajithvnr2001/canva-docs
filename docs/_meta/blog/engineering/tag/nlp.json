@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/nlp/",
+  "file": "blog/engineering/tag/nlp.md",
+  "title": "NLP - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:23.769194+00:00",
+  "html_len": 30240,
+  "md_len": 1471,
+  "depth": 0
+}

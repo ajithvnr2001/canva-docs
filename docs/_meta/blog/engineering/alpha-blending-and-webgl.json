@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/alpha-blending-and-webgl/",
+  "file": "blog/engineering/alpha-blending-and-webgl.md",
+  "title": "Alpha Blending and WebGL - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:11.251053+00:00",
+  "html_len": 70044,
+  "md_len": 10934,
+  "depth": 0
+}

@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/draw-tool/",
+  "file": "blog/engineering/tag/draw-tool.md",
+  "title": "Draw tool - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:20.868533+00:00",
+  "html_len": 32350,
+  "md_len": 1869,
+  "depth": 0
+}

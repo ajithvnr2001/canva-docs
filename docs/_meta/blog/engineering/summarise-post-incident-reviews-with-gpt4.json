@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/summarise-post-incident-reviews-with-gpt4/",
+  "file": "blog/engineering/summarise-post-incident-reviews-with-gpt4.md",
+  "title": "Summarizing Post Incident Reviews with GPT-4 - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:17.525530+00:00",
+  "html_len": 63694,
+  "md_len": 13367,
+  "depth": 0
+}

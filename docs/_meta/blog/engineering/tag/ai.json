@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/ai/",
+  "file": "blog/engineering/tag/ai.md",
+  "title": "AI - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:17.562279+00:00",
+  "html_len": 29960,
+  "md_len": 1352,
+  "depth": 0
+}

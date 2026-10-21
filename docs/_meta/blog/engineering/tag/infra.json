@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/infra/",
+  "file": "blog/engineering/tag/infra.md",
+  "title": "Infra - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:22.461598+00:00",
+  "html_len": 30302,
+  "md_len": 1348,
+  "depth": 0
+}

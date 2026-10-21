@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/developers/automate-canva-with-n8n/",
+  "file": "blog/developers/automate-canva-with-n8n.md",
+  "title": "Automate Canva with n8n using the official Canva node - Canva Developers Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:02.797241+00:00",
+  "html_len": 55931,
+  "md_len": 10673,
+  "depth": 0
+}

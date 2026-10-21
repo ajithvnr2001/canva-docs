@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/ship-shape/",
+  "file": "blog/engineering/ship-shape.md",
+  "title": "Ship Shape - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:16.965316+00:00",
+  "html_len": 70390,
+  "md_len": 17644,
+  "depth": 0
+}

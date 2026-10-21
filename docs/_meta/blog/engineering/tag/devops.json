@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/devops/",
+  "file": "blog/engineering/tag/devops.md",
+  "title": "DevOps - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:20.815623+00:00",
+  "html_len": 32067,
+  "md_len": 1774,
+  "depth": 0
+}

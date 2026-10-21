@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/developers/canva-and-coding-agents-platforms/",
+  "file": "blog/developers/canva-and-coding-agents-platforms.md",
+  "title": "Using Canva with your coding agent - Canva Developers Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:03.390177+00:00",
+  "html_len": 52382,
+  "md_len": 9492,
+  "depth": 0
+}

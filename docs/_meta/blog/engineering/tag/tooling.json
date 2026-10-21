@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/tooling/",
+  "file": "blog/engineering/tag/tooling.md",
+  "title": "Tooling - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:27.662420+00:00",
+  "html_len": 30012,
+  "md_len": 1315,
+  "depth": 0
+}

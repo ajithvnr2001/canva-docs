@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/mlops/",
+  "file": "blog/engineering/tag/mlops.md",
+  "title": "MLOps - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:23.614945+00:00",
+  "html_len": 31628,
+  "md_len": 1624,
+  "depth": 0
+}

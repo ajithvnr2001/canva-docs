@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/supporting-gpu-accelerated-machine-learning-with-kubernetes-and-nix/",
+  "file": "blog/engineering/supporting-gpu-accelerated-machine-learning-with-kubernetes-and-nix.md",
+  "title": "Supporting GPU-accelerated Machine Learning with Kubernetes and Nix - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:17.720743+00:00",
+  "html_len": 112749,
+  "md_len": 27365,
+  "depth": 0
+}

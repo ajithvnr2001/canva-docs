@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/subscribe/",
+  "file": "blog/subscribe.md",
+  "title": "Canva - Subscribe to the blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:29.513970+00:00",
+  "html_len": 30033,
+  "md_len": 1120,
+  "depth": 0
+}

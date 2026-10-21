@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/algorithms/",
+  "file": "blog/engineering/tag/algorithms.md",
+  "title": "Algorithms - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:17.964325+00:00",
+  "html_len": 32513,
+  "md_len": 1794,
+  "depth": 0
+}

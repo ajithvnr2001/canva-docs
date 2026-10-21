@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/media/",
+  "file": "blog/engineering/tag/media.md",
+  "title": "Media - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:23.509087+00:00",
+  "html_len": 33819,
+  "md_len": 2162,
+  "depth": 0
+}

@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/trust-but-test/",
+  "file": "blog/engineering/trust-but-test.md",
+  "title": "Trust but test: Vendor security testing at Canva - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:28.763897+00:00",
+  "html_len": 58228,
+  "md_len": 14589,
+  "depth": 0
+}

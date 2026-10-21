@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/software-testing/",
+  "file": "blog/engineering/tag/software-testing.md",
+  "title": "Software Testing - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:26.822719+00:00",
+  "html_len": 31440,
+  "md_len": 1642,
+  "depth": 0
+}

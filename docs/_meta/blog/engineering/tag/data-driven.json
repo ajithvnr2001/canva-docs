@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/data-driven/",
+  "file": "blog/engineering/tag/data-driven.md",
+  "title": "Data Driven - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:19.649135+00:00",
+  "html_len": 32477,
+  "md_len": 1905,
+  "depth": 0
+}

@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/why-we-left-manual-ui-testing-behind/",
+  "file": "blog/engineering/why-we-left-manual-ui-testing-behind.md",
+  "title": "Why we left manual UI testing behind - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:29.982740+00:00",
+  "html_len": 80170,
+  "md_len": 29573,
+  "depth": 0
+}

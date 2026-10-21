@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/data-science/",
+  "file": "blog/engineering/tag/data-science.md",
+  "title": "Data Science - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:19.860459+00:00",
+  "html_len": 37512,
+  "md_len": 2969,
+  "depth": 0
+}

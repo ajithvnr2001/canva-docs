@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/product-analytics-event-collection/",
+  "file": "blog/engineering/product-analytics-event-collection.md",
+  "title": "How Canva collects 25 billion events per day - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:15.659653+00:00",
+  "html_len": 74177,
+  "md_len": 17285,
+  "depth": 0
+}

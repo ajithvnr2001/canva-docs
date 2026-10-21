@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/behind-the-draw/",
+  "file": "blog/engineering/behind-the-draw.md",
+  "title": "Behind the draw - How Canva's drawing tool works - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:11.160871+00:00",
+  "html_len": 81707,
+  "md_len": 23819,
+  "depth": 0
+}

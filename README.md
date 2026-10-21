@@ -1,20 +1,36 @@
-# Canva Developer Docs — End-to-End Crawler
+# Canva.dev — Full-Site End-to-End Crawler
 
-Crawls **https://www.canva.dev/docs/** end to end (all documented surfaces) into clean Markdown:
+Crawls **https://www.canva.dev/** end to end into clean Markdown — developer docs **and**
+the rest of the site:
 
-- **Apps SDK** (`/docs/apps/…` incl. REST API reference, MCP, UI Kit, design guidelines)
-- **Admin API** (`/docs/admin/…`)
-- **Audit Logs** (`/docs/audit-logs/…`)
-- **Button** (`/docs/button/…` — JS/HTML/Android/iOS)
-- **Print partnerships** (`/docs/print-partnerships/…`)
-- **SCIM** (`/docs/scim/…`) and in-doc reference domains
-- **Flourish Charts** (`/opensource/flourish-charts/…`), plus `/agents/`, `/developers/`, `/connect/`
-
-Scope is robots-aware: `/docs/print/*`, `/blog/*`, `/example-assets/*`, raw `*.md`/`llms.txt`
-exports, storybook/playroom iframes and interactive `/storybook/` demos (SPA shells with
-no textual docs) are excluded.
+- **Developer docs** (`/docs/…`): Apps SDK + REST API reference, Admin API, Audit Logs,
+  Button (JS/HTML/Android/iOS), Connect, SCIM, Extensions, **Print API**
+- **Blog** (`/blog/…`): Canva Developers Blog (38 posts), Canva Engineering Blog
+  (217 pages incl. 145 tag archives), and `/blog/subscribe`
+- **Flourish Charts** (`/opensource/flourish-charts/…`, 80 pages)
+- **Solutions** (`/solutions/…`, 4 pages), **Agents** (`/agents/`), **CLI** auth pages
+  (`/cli/…`), **Print partnerships** (`/docs/print-partnerships/…`)
 
 **Last verified: 2026-10-21**
+
+## Scope & exceptions
+
+Every page under `www.canva.dev` is in scope, including `/blog/` and `/docs/print/`
+(the latter is listed in `robots.txt` but included here for a complete-site mirror).
+
+Skipped as non-pages, duplicate representations, or unavailable:
+
+- raw `*.md` / `llms.txt` exports, `/sources/*` OpenAPI YAML, `/example-assets/*`,
+  `/_next/*`, and static assets
+- interactive `/storybook/` demos and storybook/playroom `iframe.html` fragments
+  (SPA shells with no textual docs)
+- error routes `/404`, `/500`, `/_error`, `/_app`
+- `/solutions/ai/` and `/solutions/autofill/` (Cloudflare Access sign-in shells, no
+  public content)
+- 10 stale build-manifest routes that return HTTP 404 (7 docs section-index aliases,
+  2 removed engineering posts, 1 empty OAuth redirect stub). These are exact-match
+  exclusions, so valid child pages (e.g. `/audit-events/list-audit-events/`) are
+  still crawled.
 
 ## Stack
 
@@ -30,7 +46,7 @@ Same fallback ladder as the other corpora:
 ```
 crawl_canva.py         # full crawl (sitemap + Next.js build manifest + link discovery)
 update_incremental.py  # daily: new, lastmod-stale, and no-lastmod rotation
-docs/                  # Markdown mirror (site /docs/ prefix stripped)
+docs/                  # Markdown mirror of the site root
 docs/_meta/            # per-page fetch metadata (lastmod comparisons)
 docs/_index.jsonl      # URL → file index
 docs/_verified.json    # URL → last verification time (drives stale/rotation)
@@ -38,6 +54,12 @@ docs/_manifest.json    # crawl stats / done flag
 canva-crawl.service    # VM unit to run/resume the crawl in the background
 boot.sh                # reinstall + resume after VM reboot/reallocation
 ```
+
+`docs/` mirrors the site root. The site's `/docs/` subtree is flattened
+(`/docs/apps/x/` → `docs/apps/x.md`), while other sections keep their site path
+(`/blog/…` → `docs/blog/…`, `/opensource/…` → `docs/opensource/…`,
+`/solutions/…` → `docs/solutions/…`). The site root `/` redirects to `/docs/`, so it
+maps to `docs/_index.md` with no duplicate homepage.
 
 ## Run
 
@@ -57,12 +79,12 @@ Crash-safe: every page is written immediately (`docs/…md` + `docs/_meta/…jso
 - **GitHub Actions** `.github/workflows/update-docs.yml` runs daily at **09:45 UTC**
   (workflow_dispatch too). Each run refreshes three lanes:
   **new** sitemap/build-manifest URLs, **lastmod-stale** pages (sitemap timestamp newer
-  than our verification), and **no-lastmod** pages (`/docs/extensions/**`, Preview API,
-  type-declaration pages, and anything absent from `sitemap.xml`) oldest-first, up to
-  300 per run.
-- The **Next.js build manifest** (`_buildManifest.js`, keyed by the live buildId) is used
-  as an authoritative route inventory: it catches pages that are absent from both
-  `sitemap.xml` and the static link graph (46 such pages found on 2026-10-21).
+  than our verification), and **no-lastmod / not-in-inventory** pages oldest-first,
+  up to 300 per run (current pool: 271).
+- The **whole-site Next.js build manifest** (`_buildManifest.js`, keyed by the live
+  buildId) is the authoritative route inventory. In addition, 33 pages are reachable
+  only through the link graph beyond both the sitemap and manifest (Apps SDK API
+  type pages, migration pages, etc.) and are kept in the rotation pool.
 - Writes are content-aware: if a refreshed page's Markdown is unchanged, the page and
   its metadata are left untouched (only `_verified.json` advances), so daily runs do
   not churn the mirror.
@@ -72,14 +94,13 @@ Crash-safe: every page is written immediately (`docs/…md` + `docs/_meta/…jso
 
 ## Results (verified 2026-10-21)
 
-- **1,028 pages** in the mirror with **0 failures**
-  (1,019 via Scrapling, 8 via Crawl4AI JS fallback, 1 via httpx)
-- Coverage verified against two independent inventories: **771/771** sitemap URLs and
-  **926/926** Next.js build-manifest routes, **0 missing**
-- 211 pages found by link discovery; **46 more** found only via the build manifest
-  (Preview API reference, TypeScript type declarations, Java/Spark SDK pages)
-- 16 Print API pages excluded because `robots.txt` disallows `/docs/print/*`;
-  blog, example assets and interactive Storybook shells are out of scope
-- ~23 MB Markdown mirror with 1,028 per-page metadata records
-- Sections: Apps SDK + REST API reference, Admin API, Audit Logs, Button (JS/HTML/Android/iOS),
-  Print partnerships, SCIM, Extensions, Flourish Charts, Agents/Connect
+- **1,319 pages** in the mirror with **0 failures**
+  (1,317 via Scrapling, 2 via Crawl4AI JS fallback)
+- Coverage verified against two independent inventories: **1,048/1,048** sitemap URLs
+  and **1,141/1,141** whole-site Next.js build-manifest routes, **0 missing**
+- 33 pages found only by link discovery (beyond sitemap + manifest)
+- 271-page no-lastmod rotation pool (all sitemap URLs carry `lastmod`)
+- 28 MB Markdown mirror with 1,319 per-page metadata records
+- Sections: 975 docs pages (incl. 16 Print API), 257 blog pages (38 Developers,
+  217 Engineering incl. 145 tag archives, index + subscribe), 80 Flourish Charts,
+  4 solutions, 2 CLI, 1 agents landing

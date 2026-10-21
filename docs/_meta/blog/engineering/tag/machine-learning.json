@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/machine-learning/",
+  "file": "blog/engineering/tag/machine-learning.md",
+  "title": "Machine learning - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:23.262540+00:00",
+  "html_len": 35057,
+  "md_len": 2324,
+  "depth": 0
+}

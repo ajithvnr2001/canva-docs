@@ -1,0 +1,11 @@
+{
+  "url": "https://www.canva.dev/blog/",
+  "file": "blog.md",
+  "title": "Canva Engineering Blog",
+  "method": "crawl4ai+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:18.327951+00:00",
+  "html_len": 96402,
+  "md_len": 6288,
+  "depth": 0,
+  "fallback": "scrapling: scrapling thin content (71 chars), fallback to crawl4ai"
+}

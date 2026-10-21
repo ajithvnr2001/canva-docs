@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/draw-in-present-mode/",
+  "file": "blog/engineering/draw-in-present-mode.md",
+  "title": "From Intern Project to Production: How I Shipped the Draw Tool for Canva's Present Mode - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:12.100095+00:00",
+  "html_len": 72818,
+  "md_len": 16223,
+  "depth": 0
+}

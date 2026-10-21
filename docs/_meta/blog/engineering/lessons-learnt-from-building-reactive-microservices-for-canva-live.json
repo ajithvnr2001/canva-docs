@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/lessons-learnt-from-building-reactive-microservices-for-canva-live/",
+  "file": "blog/engineering/lessons-learnt-from-building-reactive-microservices-for-canva-live.md",
+  "title": "Lessons learnt from building reactive microservices for Canva Live - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:14.907434+00:00",
+  "html_len": 75702,
+  "md_len": 24225,
+  "depth": 0
+}

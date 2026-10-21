@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/incident/",
+  "file": "blog/engineering/tag/incident.md",
+  "title": "Incident - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:22.432953+00:00",
+  "html_len": 30400,
+  "md_len": 1405,
+  "depth": 0
+}

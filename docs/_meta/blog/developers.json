@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/developers/",
+  "file": "blog/developers.md",
+  "title": "Canva Developers Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:02.445339+00:00",
+  "html_len": 62858,
+  "md_len": 5087,
+  "depth": 0
+}

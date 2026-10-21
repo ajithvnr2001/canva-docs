@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/worker-backpressure-part-1-how-we-taught-our-queue-workers-to-slow-down/",
+  "file": "blog/engineering/worker-backpressure-part-1-how-we-taught-our-queue-workers-to-slow-down.md",
+  "title": "Worker Backpressure (Part 1) - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:29.488147+00:00",
+  "html_len": 70613,
+  "md_len": 18579,
+  "depth": 0
+}

@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/search-pipeline-part-ii/",
+  "file": "blog/engineering/search-pipeline-part-ii.md",
+  "title": "Search Pipeline: Part II - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:16.701823+00:00",
+  "html_len": 85232,
+  "md_len": 20743,
+  "depth": 0
+}

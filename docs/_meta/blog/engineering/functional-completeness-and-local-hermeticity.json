@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/functional-completeness-and-local-hermeticity/",
+  "file": "blog/engineering/functional-completeness-and-local-hermeticity.md",
+  "title": "Functional completeness and local hermeticity - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:13.528197+00:00",
+  "html_len": 149460,
+  "md_len": 22498,
+  "depth": 0
+}

@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/backend-development/",
+  "file": "blog/engineering/tag/backend-development.md",
+  "title": "Backend Development - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:17.939888+00:00",
+  "html_len": 31365,
+  "md_len": 1614,
+  "depth": 0
+}

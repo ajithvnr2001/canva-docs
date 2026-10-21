@@ -1,4 +1,4 @@
-# Canva Docs — Operations Guide
+# Canva.dev Full-Site — Operations Guide
 
 ## Initial / resumed crawl
 
@@ -8,9 +8,10 @@ tail -f /data/opencode/canva/crawl.log  # journal may buffer; this is the log
 python3 crawl_canva.py --concurrency 10 # manual run (resumes)
 ```
 
-The crawler seeds from `https://www.canva.dev/sitemap.xml` **and** the live Next.js
-`_buildManifest.js` (771 sitemap + 926 manifest routes → 1,008 unique seeds), then follows
-in-scope links (20 more pages). Output goes to `docs/`; per-page metadata to `docs/_meta/`.
+The crawler seeds from `https://www.canva.dev/sitemap.xml` **and** the live whole-site
+Next.js `_buildManifest.js` (1,048 sitemap + 1,141 manifest routes → 1,286 unique
+seeds), then follows in-scope links beyond both (33 more pages, e.g. Apps SDK API type
+pages). Output goes to `docs/`; per-page metadata to `docs/_meta/`.
 
 Completion check:
 
@@ -18,22 +19,23 @@ Completion check:
 python3 -c "import json; m=json.load(open('docs/_manifest.json')); print(m['visited'], m['failed'], m.get('done'))"
 ```
 
-`done: true` means every in-scope sitemap page was visited with zero failures.
+`done: true` means every live sitemap/build-manifest route was visited with zero
+failures (the stale-404 and Cloudflare-Access routes exact-excluded in `README.md`).
 
 ## Daily update lanes
 
 `update_incremental.py` (Actions, 09:45 UTC) processes:
 
-1. **new** — sitemap or build-manifest URLs not indexed yet;
+1. **new** — live sitemap or whole-site build-manifest URLs not indexed yet;
 2. **lastmod-stale** — sitemap `<lastmod>` newer than `docs/_verified.json`;
-3. **no-lastmod** — indexed pages without a sitemap timestamp (the whole
-   `/docs/extensions/**` tree, Preview API, type-declaration pages, legacy app API
-   pages), oldest verification first, capped at 300/run.
+3. **no-lastmod / not-in-inventory** — indexed pages without a sitemap timestamp or
+   absent from the live union (current pool: 271, e.g. type-declaration pages and
+   link-only pages), oldest verification first, capped at 300/run.
 
 The build manifest (`_buildManifest.js`, fetched with the live buildId) is the
-authoritative route inventory and catches pages missing from both the sitemap and the
-static link graph. `--check-only` previews, `--limit N` smoke-tests, `--force URL`
-refetches one page.
+authoritative whole-site route inventory and catches pages missing from both the
+sitemap and the static link graph. `--check-only` previews, `--limit N` smoke-tests,
+`--force URL` refetches one page.
 
 ## Daily updates
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Incremental update for www.canva.dev/docs.
+"""Incremental update for the whole www.canva.dev site (docs + blog + all sections).
 
 Three refresh lanes:
-  1. NEW      - in sitemap but not indexed yet
+  1. NEW      - live sitemap/build-manifest URL not indexed yet
   2. STALE    - sitemap <lastmod> newer than our last verification
-  3. MISSING  - indexed pages absent from the sitemap (e.g. /docs/extensions/**),
-                refreshed oldest-first every run up to ROTATION_CAP
+  3. MISSING  - indexed pages with no sitemap lastmod or absent from the live union
+                (current rotation pool: 271 pages), refreshed oldest-first up to ROTATION_CAP
 
 Content-aware: a refreshed page is only rewritten when its Markdown body actually
 changed, so unchanged confirmations don't create 200-file commits. Verification
@@ -27,7 +27,7 @@ DOCS = C.OUT_ROOT
 STATE = C.STATE_FILE
 VERIFIED = DOCS / "_verified.json"
 REFRESH_CAP = 1000   # max lastmod-stale refetches per run (newest first)
-ROTATION_CAP = 300   # max sitemap-missing pages re-verified per run (oldest first)
+ROTATION_CAP = 300   # max no-lastmod / not-in-inventory pages re-verified per run (oldest first)
 
 FRONTMATTER_RE = re.compile(r"\A---\n.*?\n---\n\n?", re.S)
 

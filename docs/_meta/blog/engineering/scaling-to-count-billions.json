@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/scaling-to-count-billions/",
+  "file": "blog/engineering/scaling-to-count-billions.md",
+  "title": "Scaling to Count Billions - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:15.955021+00:00",
+  "html_len": 81538,
+  "md_len": 22908,
+  "depth": 0
+}

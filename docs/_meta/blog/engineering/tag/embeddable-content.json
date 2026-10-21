@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/embeddable-content/",
+  "file": "blog/engineering/tag/embeddable-content.md",
+  "title": "Embeddable Content - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:21.222187+00:00",
+  "html_len": 30653,
+  "md_len": 1545,
+  "depth": 0
+}

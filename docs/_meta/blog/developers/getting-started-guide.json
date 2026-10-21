@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/developers/getting-started-guide/",
+  "file": "blog/developers/getting-started-guide.md",
+  "title": "Getting Started Guide - Canva Developers Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:06.383110+00:00",
+  "html_len": 47062,
+  "md_len": 7923,
+  "depth": 0
+}

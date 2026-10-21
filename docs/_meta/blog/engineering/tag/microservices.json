@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/microservices/",
+  "file": "blog/engineering/tag/microservices.md",
+  "title": "Microservices - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:23.472603+00:00",
+  "html_len": 30606,
+  "md_len": 1537,
+  "depth": 0
+}

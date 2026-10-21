@@ -1,0 +1,611 @@
+---
+url: https://www.canva.dev/docs/apps/v2-migration-guide/
+title: Apps SDK v2 Upgrade guide - Canva Developers SDK Documentation
+method: scrapling+scrapegraph
+fetched_at: 2026-10-21T14:20:38.768424+00:00
+---
+
+# Apps SDK v2 Upgrade guide - Canva Developers SDK Documentation
+
+> Source: https://www.canva.dev/docs/apps/v2-migration-guide/
+
+App lifecycle
+
+[App versioning](https://www.canva.dev/docs/apps/versioning-apps/)[Canva REST API versioning](https://www.canva.dev/docs/apps/rest-apis/manage-versions/)[Disabled apps](https://www.canva.dev/docs/apps/handling-disabled-apps/)[Deep linking](https://www.canva.dev/docs/apps/deep-linking/)
+
+Growth and performance
+
+[Analytics](https://www.canva.dev/docs/apps/analytics/)[Getting featured](https://www.canva.dev/docs/apps/getting-featured/)
+
+Monetization
+
+[Overview](https://www.canva.dev/docs/apps/monetization/)[External payment links](https://www.canva.dev/docs/apps/accepting-payments/)
+
+Premium Apps Program
+
+[Overview](https://www.canva.dev/docs/apps/premium-apps/)[Implementing monetization](https://www.canva.dev/docs/apps/premium-apps/implementing-monetization/)[Set up payout details](https://www.canva.dev/docs/apps/payout-details/)[Design guidelines](https://www.canva.dev/docs/apps/design-guidelines/premium-apps/)[Learn more⁠(opens in a new tab or window)](https://www.canva.com/developers/premium-apps-program/)
+
+Team and access
+
+[App collaborators](https://www.canva.dev/docs/apps/app-configuration/collaboration/)
+
+Upgrades and migrations
+
+[Overview](https://www.canva.dev/docs/apps/upgrades-and-migrations/)[Apps SDK v2 Upgrade guide](https://www.canva.dev/docs/apps/upgrades-and-migrations/v2-migration-guide/)[Apps SDK v2 Upgrade FAQ](https://www.canva.dev/docs/apps/upgrades-and-migrations/v2-migration-faq/)[Design Editor Intent Upgrade guide](https://www.canva.dev/docs/apps/upgrades-and-migrations/design-editor-migration-guide/)[App UI Kit v5 Upgrade guide](https://www.canva.dev/docs/apps/upgrades-and-migrations/app-ui-kit-v5-migration/)[App Scripts Upgrade guide](https://www.canva.dev/docs/apps/upgrades-and-migrations/app-scripts-migration-guide/)
+
+# Apps SDK v2 Upgrade guide
+
+How to upgrade to Apps SDK v2.
+
+Copy page
+
+This guide refers to the Apps SDK, the name used for building apps inside Canva before it became part of the Canva Developers SDK. The version numbers and APIs described here are unchanged.
+
+This guide explains all of the code changes required to upgrade to Apps SDK v2. For general information about upgrades, including deadlines, see the [Upgrade FAQ](https://www.canva.dev/docs/apps/upgrades-and-migrations/v2-migration-faq/).
+
+## Automated migration tool
+
+You can use the [Canva CLI](https://www.canva.dev/docs/apps/canva-cli/) automated migration tool to handle most of the required changes. The CLI automatically updates:
+
+  * Package imports and versions
+  * API method signatures
+  * Required property additions (such as `aiDisclosure`)
+  * Deprecated method replacements
+
+
+
+For detailed CLI usage, see the [Canva CLI documentation](https://www.canva.dev/docs/apps/canva-cli/#migrate).
+
+### Run the migration tool
+
+  1. If you haven't already, install the Canva CLI:
+         
+         npm install -g @canva/cli@latest
+
+SHELL
+
+Copy
+
+  2. In your app directory, run the migration command:
+         
+         canva apps migrate apps-sdk-v1-v2
+
+SHELL
+
+Copy
+
+
+
+
+After running the automated migration, review the changes and complete any manual steps outlined in the following sections.
+
+## Manual migration steps
+
+The following sections explain the specific code changes if you prefer to upgrade manually or need to handle cases not covered by the automated tool.
+
+### Packages
+
+All the npm packages for the Apps SDK have been updated with new TypeScript definitions. These definitions make it easier to identify what parts of your codebase need to be updated.
+
+To install the updates, run the following command:
+    
+    
+    npm install @canva/asset@latest @canva/design@latest @canva/error@latest @canva/platform@latest @canva/user@latest
+
+SHELL
+
+Copy
+
+#### Legacy `/sdk` directory
+
+If you're using an early version of the Apps SDK starter kit that included a local `/sdk` directory at the root of the starter kit repo, you should:
+
+  1. Remove the local `/sdk` directory.
+
+  2. Update any imports to use the latest npm packages instead.
+
+For example, replace the old local imports:
+         
+         // Old imports from local /sdk directory
+         
+         import { initAppElement } from "../sdk/design";
+         
+         import { auth } from "../sdk/user";
+
+TSX
+
+Copy
+
+with the latest npm package imports:
+         
+         // Update to npm packages
+         
+         import { initAppElement } from "@canva/design";
+         
+         import { auth } from "@canva/user";
+
+TSX
+
+Copy
+
+
+
+
+### AI disclosure
+
+In v2, an `aiDisclosure` property is required when uploading assets. This property indicates whether an asset was generated by AI, and helps maintain transparency about the origin of assets:
+    
+    
+    await upload({
+    
+      type: "audio",
+    
+      title: "Example audio",
+    
+      url: "https://www.canva.dev/example-assets/audio-import/audio.mp3",
+    
+      mimeType: "audio/mp3",
+    
+      durationMs: 86047,
+    
+      aiDisclosure: "none", // => Or "app_generated"
+    
+    });
+
+TSX
+
+Copy
+
+### Alternative text
+
+In v2, creating an element requires an `altText` property to be set:
+    
+    
+    await addElementAtPoint({
+    
+      type: "image",
+    
+      ref: result.ref,
+    
+      altText: {
+    
+        text: "Example image",
+    
+        decorative: false,
+    
+      },
+    
+    });
+
+TSX
+
+Copy
+
+If need be, this value can be explicitly set to `undefined`:
+    
+    
+    await addElementAtPoint({
+    
+      type: "image",
+    
+      ref: result.ref,
+    
+      altText: undefined,
+    
+    });
+
+TSX
+
+Copy
+
+### Authentication
+
+In v1, apps could use [manual authentication](https://www.canva.dev/docs/apps/authenticating-users/manual/) to authenticate users through third-party platforms:
+    
+    
+    import { auth } from "@canva/user";
+    
+    
+    
+    
+    const response = await auth.requestAuthentication();
+    
+    
+    
+    
+    switch (response.status) {
+    
+      case "COMPLETED":
+    
+        console.log("The authentication was successful.");
+    
+        break;
+    
+      case "ABORTED":
+    
+        console.log("The user exited the authentication flow.");
+    
+        break;
+    
+      case "DENIED":
+    
+        console.log("The user didn't have the required permissions.");
+    
+        break;
+    
+    }
+
+TSX
+
+Copy
+
+In v2, manual authentication has been removed.
+
+Apps have two alternatives for authenticating users:
+
+  * [Frictionless auth](https://www.canva.dev/docs/apps/authenticating-users/frictionless/)
+  * [OAuth](https://www.canva.dev/docs/apps/authenticating-users/oauth/)
+
+
+
+### Feature support
+
+Apps can now run in documents, but some APIs aren't compatible with documents.
+
+In v1, there's no workaround for this. If an app uses incompatible APIs, it will be disabled for documents.
+
+In v2, we've introduced the following methods:
+
+  * `isSupported`
+  * `registerOnSupportChange`
+
+
+
+Apps can use these methods to check if a method is available in the current context. This allows the app to adapt to the context in which it's running.
+
+For example, you can place the two add element methods in an array and use `Array.find` in combination with `isSupported` to get the appropriate add element method for the current document type. In the following code example, the **Add element** button will be disabled if neither `addElementAtPoint` nor `addElementAtCursor` is supported:
+    
+    
+    import { Button, Rows } from "@canva/app-ui-kit";
+    
+    import { addElementAtCursor, addElementAtPoint } from "@canva/design";
+    
+    import { useFeatureSupport } from "@canva/app-hooks";
+    
+    import * as styles from "styles/components.css";
+    
+    
+    
+    
+    export const App = () => {
+    
+      const isSupported = useFeatureSupport();
+    
+      const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    
+        isSupported(fn),
+    
+      );
+    
+    
+    
+    
+      function handleClick() {
+    
+        addElement?.({
+    
+          type: "text",
+    
+          children: ["Hello world"],
+    
+        });
+    
+      }
+    
+    
+    
+    
+      return (
+    
+        <div className={styles.scrollContainer}>
+    
+          <Rows spacing="1u">
+    
+            <Button
+    
+              variant="primary"
+    
+              onClick={handleClick}
+    
+              disabled={!addElement}
+    
+              tooltipLabel={
+    
+                !addElement ? "This feature is not supported in the current page" : undefined
+    
+              }
+    
+            >
+    
+              Add element
+    
+            </Button>
+    
+          </Rows>
+    
+        </div>
+    
+      );
+    
+    };
+
+TSX
+
+Copy
+
+To learn more, see [Feature support](https://www.canva.dev/docs/apps/feature-support/).
+
+### Adding elements
+
+In v1, elements could be added to a design with the `addNativeElement` method:
+    
+    
+    await addNativeElement({
+    
+      type: "TEXT",
+    
+      children: ["Hello world"],
+    
+    });
+
+TSX
+
+Copy
+
+In v2, this method has been deprecated and superseded by the following methods:
+
+  * `addElementAtPoint`, which is a renamed version of `addNativeElement`.
+  * `addElementAtCursor`, which is a new method that's compatible with documents.
+
+
+
+These methods are only available in certain contexts and, as a result, apps should use the `isSupported` method to check that the methods are available in the current context before calling them:
+    
+    
+    import { Button, Rows } from "@canva/app-ui-kit";
+    
+    import { addElementAtCursor, addElementAtPoint } from "@canva/design";
+    
+    import { useFeatureSupport } from "@canva/app-hooks";
+    
+    import * as styles from "styles/components.css";
+    
+    
+    
+    
+    export const App = () => {
+    
+      const isSupported = useFeatureSupport();
+    
+      const addElement = [addElementAtPoint, addElementAtCursor].find((fn) =>
+    
+        isSupported(fn),
+    
+      );
+    
+    
+    
+    
+      function handleClick() {
+    
+        addElement?.({
+    
+          type: "text",
+    
+          children: ["Hello world"],
+    
+        });
+    
+      }
+    
+    
+    
+    
+      return (
+    
+        <div className={styles.scrollContainer}>
+    
+          <Rows spacing="1u">
+    
+            <Button
+    
+              variant="primary"
+    
+              onClick={handleClick}
+    
+              disabled={!addElement}
+    
+              tooltipLabel={!addElement ? "This feature is not supported in the current page" : undefined}
+    
+            >
+    
+              Add element
+    
+            </Button>
+    
+          </Rows>
+    
+        </div>
+    
+      );
+    
+    };
+
+TSX
+
+Copy
+
+To learn more, see:
+
+  * [Elements](https://www.canva.dev/docs/apps/elements/)
+  * [Feature support](https://www.canva.dev/docs/apps/feature-support/)
+
+
+
+### Asset IDs
+
+In v1, the `upload` method accepted an `id` property:
+    
+    
+    await upload({
+    
+      type: "IMAGE",
+    
+      id: "exampleid",
+    
+      mimeType: "image/jpeg",
+    
+      url: "https://www.canva.dev/example-assets/image-import/image.jpg",
+    
+      thumbnailUrl:
+    
+        "https://www.canva.dev/example-assets/image-import/thumbnail.jpg",
+    
+    });
+
+TSX
+
+Copy
+
+This property has been deprecated for a while and, in v2, it's been removed entirely:
+    
+    
+    await upload({
+    
+      type: "IMAGE",
+    
+      mimeType: "image/jpeg",
+    
+      url: "https://www.canva.dev/example-assets/image-import/image.jpg",
+    
+      thumbnailUrl:
+    
+        "https://www.canva.dev/example-assets/image-import/thumbnail.jpg",
+    
+      aiDisclosure: "none",
+    
+    });
+
+TSX
+
+Copy
+
+### Discriminators
+
+In v1, some discrimintor values were uppercase:
+    
+    
+    await addNativeElement({
+    
+      type: "EMBED",
+    
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    
+    });
+
+TSX
+
+Copy
+
+In v2, all discriminator values are lowercase:
+    
+    
+    await addNativeElement({
+    
+      type: "embed",
+    
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    
+    });
+
+TSX
+
+Copy
+
+### Drag and drop
+
+In v1, apps could support drag and drop with the `startDrag` or `makeDraggable` methods:
+
+startDragstartDrag
+
+makeDraggablemakeDraggable
+    
+    
+    ui.startDrag(event, {
+    
+      type: "TEXT",
+    
+      children: ["Add text into a design"],
+    
+    });
+
+TSX
+
+Copy
+    
+    
+    ui.makeDraggable({
+    
+      node,
+    
+      dragData: {
+    
+        type: "TEXT",
+    
+        children: ["Hello world"],
+    
+      },
+    
+      onDragStart: () => {
+    
+        console.log("The drag event has started");
+    
+      },
+    
+      onDragEnd: () => {
+    
+        console.log("The drag event has ended");
+    
+      },
+    
+    });
+
+TSX
+
+Copy
+
+In v2, `startDrag` has been deprecated and `makeDraggable` has been removed.
+
+Instead, apps should use the following methods:
+
+  * `startDragToPoint`
+  * `startDragToCursor`
+
+
+
+`startDragToPoint` is identical to `startDrag`, aside from the name, while `startDragToCursor` is a new method that's compatible with documents.
+
+Because these methods are only available in certain contexts, apps should use the `isSupported` method to check that the methods are available in the current context.
+
+To learn more, see:
+
+  * [Drag and drop](https://www.canva.dev/docs/apps/supporting-drag-drop/)
+  * [Feature support](https://www.canva.dev/docs/apps/feature-support/)
+
+
+
+### Uploading assets
+
+In v1, the `queueMediaUpload` and `whenUploaded` methods preceded the `upload` method. These methods have been deprecated for a while and have now been removed.
+
+Apps should only upload assets with the `upload` method.

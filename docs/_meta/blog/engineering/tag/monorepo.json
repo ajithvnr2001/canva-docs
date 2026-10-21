@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/monorepo/",
+  "file": "blog/engineering/tag/monorepo.md",
+  "title": "Monorepo - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:23.578965+00:00",
+  "html_len": 30354,
+  "md_len": 1550,
+  "depth": 0
+}

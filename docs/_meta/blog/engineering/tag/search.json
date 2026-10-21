@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/search/",
+  "file": "blog/engineering/tag/search.md",
+  "title": "Search - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:26.358617+00:00",
+  "html_len": 38817,
+  "md_len": 3416,
+  "depth": 0
+}

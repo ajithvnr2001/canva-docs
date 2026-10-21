@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/deep-learning/",
+  "file": "blog/engineering/tag/deep-learning.md",
+  "title": "Deep Learning - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:20.042776+00:00",
+  "html_len": 30310,
+  "md_len": 1501,
+  "depth": 0
+}

@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/dms-aws-rds-migration/",
+  "file": "blog/engineering/dms-aws-rds-migration.md",
+  "title": "Relational Database Migration with AWS Database Migration Service (DMS) - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:12.505879+00:00",
+  "html_len": 75524,
+  "md_len": 18153,
+  "depth": 0
+}

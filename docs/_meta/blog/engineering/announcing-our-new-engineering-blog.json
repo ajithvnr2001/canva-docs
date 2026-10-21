@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/announcing-our-new-engineering-blog/",
+  "file": "blog/engineering/announcing-our-new-engineering-blog.md",
+  "title": "Announcing our new engineering blog - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:23:53.592859+00:00",
+  "html_len": 44697,
+  "md_len": 4254,
+  "depth": 0
+}

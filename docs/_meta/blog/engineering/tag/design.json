@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/design/",
+  "file": "blog/engineering/tag/design.md",
+  "title": "Design - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:20.304029+00:00",
+  "html_len": 34994,
+  "md_len": 2515,
+  "depth": 0
+}

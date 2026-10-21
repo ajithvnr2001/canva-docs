@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-End-to-end crawler for https://www.canva.dev/docs/ (+ all in-scope developer surfaces).
+End-to-end crawler for the whole https://www.canva.dev/ site (docs + blog + all sections).
 
 Stack (same ladder as the other corpora):
   1. Scrapling (Fetcher)             - fast static fetch (primary)
@@ -8,13 +8,16 @@ Stack (same ladder as the other corpora):
   3. ScrapeGraphAI (convert_to_md)   - HTML -> clean markdown
   4. httpx                           - last-resort static fetch
 
-Scope: www.canva.dev paths /docs/, /opensource/, /agents/, /developers/, /connect/.
-Robots-respecting exclusions: /docs/print/*, /example-assets/*, storybook/playroom
-iframes, raw *.md and llms.txt exports, /blog/*.
+Scope: every page under www.canva.dev. Excluded: non-page/duplicate representations
+(assets, raw *.md/llms.txt, OpenAPI YAML under /sources/, storybook/playroom fragments,
+/_next/), error routes, two Cloudflare-Access-gated /solutions pages, and an exact list
+of stale build-manifest routes that 404. /docs/print/* is included for a complete mirror
+even though robots.txt lists it.
 
 Crash-safe: per-page markdown + _meta json + crawl_state.json; rerun to resume.
-Output mirror: /docs/apps/api/latest/ -> docs/apps/api/latest.md (site's /docs/ prefix
-is stripped so the repo's docs/ mirrors the docs root).
+Output mirror: docs/ mirrors the site root; the site's /docs/ prefix is flattened
+(/docs/apps/api/latest/ -> docs/apps/api/latest.md); other sections keep their site path
+(/blog/... -> docs/blog/...).
 """
 import asyncio
 import os
@@ -106,12 +109,26 @@ async def get_crawler():
 def oneline(s, n=300):
     return re.sub(r"\s+", " ", str(s)).strip()[:n]
 
-# ---------- scope ----------
+# ---------- scope: the whole www.canva.dev site ----------
 MAIN_HOST = "www.canva.dev"
-ALLOWED_PREFIXES = ("/docs/", "/opensource/", "/agents/", "/developers/", "/connect/")
-EXCLUDED_PREFIXES = ("/docs/print/", "/blog/", "/example-assets/")
+ALLOWED_PREFIXES = ("/",)
+# Non-page or duplicate representations only. Note: /docs/print/* is included here
+# deliberately (complete-site mirror) even though robots.txt lists it.
+EXCLUDED_PREFIXES = ("/example-assets/", "/_next/", "/sources/", "/404", "/500", "/_error", "/_app")
+# Exact routes only: canva.dev serves 404 for these stale build-manifest entries, plus one
+# empty OAuth redirect stub. Kept exact so valid child pages (e.g. /audit-events/list-audit-events/)
+# are not excluded by prefix matching.
+EXCLUDED_EXACT_PATHS = {
+    "/solutions/ai/", "/solutions/autofill/",
+    "/docs/admin/api-reference/audit-events/", "/docs/admin/api-reference/oauth/",
+    "/docs/admin/api-reference/users/", "/docs/admin/api-reference/teams/",
+    "/docs/admin/api-reference/groups/", "/docs/admin/api-reference/organizations/",
+    "/docs/apps/app-elements/", "/blog/engineering/meet-the-engineer--desiree-sujardi/",
+    "/blog/engineering/sample/", "/connect/oauth/start/",
+}
 BINARY_EXTS = (".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico", ".css", ".js",
-               ".woff", ".woff2", ".ttf", ".mp4", ".webm", ".zip", ".pdf", ".json", ".txt")
+               ".woff", ".woff2", ".ttf", ".mp4", ".webm", ".zip", ".pdf", ".json", ".txt",
+               ".xml", ".yml", ".yaml", ".map")
 
 def normalize_url(u, base=BASE_URL):
     if not u:
@@ -133,22 +150,35 @@ def normalize_url(u, base=BASE_URL):
     if host != MAIN_HOST:
         return None
     path = p.path or "/"
+    if path == "/":
+        path = "/docs/"   # https://www.canva.dev/ redirects to /docs/
     if path == "/docs":
         path = "/docs/"
     low = path.lower()
     for ext in BINARY_EXTS:
         if low.endswith(ext):
             return None
-    # robots.txt disallows: /docs/print/*, /example-assets/*, storybook/playroom iframes,
-    # /*/llms.txt, /*/*.md — skip all of them.
+    # robots.txt disallows: /example-assets/*, storybook/playroom iframes,
+    # /*/llms.txt, /*/*.md — skip all of them. (The 16 /docs/print/* pages are
+    # included at the user's explicit request for a complete-site mirror.)
     if "iframe.html" in low or low.endswith(".md") or low.endswith("llms.txt"):
+        return None
+    # Next.js dynamic-route templates from _buildManifest.js (e.g. /tag/[slug]) are
+    # not real pages; concrete instances are discovered via sitemap/links instead.
+    if "[" in path or "]" in path:
         return None
     # interactive Storybook demos (no textual docs; SPA renders an error shell when static)
     if "/storybook/" in low or low.endswith("/storybook"):
         return None
     def _excluded(pp):
-        return any(pp == x.rstrip("/") or pp.startswith(x) for x in EXCLUDED_PREFIXES)
-    if _excluded(path):
+        return (pp in EXCLUDED_EXACT_PATHS
+                or any(pp == x.rstrip("/") or pp.startswith(x) for x in EXCLUDED_PREFIXES))
+    # canonicalise the trailing slash before the exact-route check (manifest/link URLs
+    # often omit it, e.g. /blog/engineering/sample vs /blog/engineering/sample/)
+    check = path
+    if not check.endswith("/") and "." not in check.rsplit("/", 1)[-1]:
+        check += "/"
+    if _excluded(check):
         return None
     if not any(path.startswith(x) for x in ALLOWED_PREFIXES):
         return None
@@ -166,14 +196,15 @@ def normalize_url(u, base=BASE_URL):
 def url_to_relpath(url):
     p = urlparse(url)
     path = unquote(p.path).strip("/")
-    # strip the site's /docs/ prefix: repo docs/ mirrors the docs root
-    if path == "docs":
-        path = ""
-    elif path.startswith("docs/"):
-        path = path[len("docs/"):]
+    # repo docs/ mirrors the site root; the site's /docs/ subtree is flattened to the
+    # repo root (so /docs/apps/x -> docs/apps/x.md) while other sections keep their path.
     if not path:
-        rel = "_index"
+        rel = "_home"          # site homepage https://www.canva.dev/
+    elif path == "docs":
+        rel = "_index"         # docs landing page https://www.canva.dev/docs/
     else:
+        if path.startswith("docs/"):
+            path = path[len("docs/"):]
         parts = []
         for seg in path.split("/"):
             seg = re.sub(r'[<>:"\\|?*\x00-\x1F]', "_", seg).strip()
@@ -313,6 +344,8 @@ async def fetch_one(url):
         md_best = md_raw if len(md_raw or "") >= len(md_sg or "") else md_sg
         header = f"# {title}\n\n> Source: {url}\n\n"
         md = header + (md_best or "")
+        if "This page could not be found" in md:
+            raise RuntimeError("crawl4ai 404 page")
         if len(md.strip()) < 200:
             raise RuntimeError(f"crawl4ai thin content: {last_err}")
         return {"url": url, "title": title, "html": html, "markdown": md, "links": r["links"],
@@ -401,8 +434,7 @@ async def load_build_manifest_urls():
                 print(f"[manifest] buildManifest HTTP {r.status_code} for build {bid[:12]}")
                 return []
             for route in re.findall(r'"(/[^"\\]*)"', r.text):
-                if not (route.startswith("/docs/") or route in ("/docs", "/agents")):
-                    continue
+                # whole-site inventory: docs, blog, opensource, solutions, cli, agents…
                 n = normalize_url(BASE_URL + route)
                 if n:
                     urls.add(n)
@@ -539,7 +571,21 @@ async def main(max_pages=10000, concurrency=10):
         fa = info.get("fetched_at") if isinstance(info, dict) else None
         if fa:
             ver[u] = fa
-    ver = {u: ver[u] for u in visited if u in ver}
+    # backfill from per-page metadata for pages resumed from pre-ledger state files
+    for u, info in visited.items():
+        if u in ver or not isinstance(info, dict):
+            continue
+        rel = info.get("file")
+        if not rel:
+            continue
+        mp = OUT_ROOT / "_meta" / Path(rel).with_suffix(".json")
+        try:
+            fa = json.loads(mp.read_text()).get("fetched_at")
+            if fa:
+                ver[u] = fa
+        except Exception:
+            pass
+    ver = {u: ver[u] for u in visited if u in ver and ver[u]}
     vpath.write_text(json.dumps(ver, indent=1, sort_keys=True))
     done = len(failed) == 0 and len(visited) >= len(seeds)
     manifest = {

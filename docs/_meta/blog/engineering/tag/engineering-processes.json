@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/engineering-processes/",
+  "file": "blog/engineering/tag/engineering-processes.md",
+  "title": "Engineering Processes - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:21.413797+00:00",
+  "html_len": 30418,
+  "md_len": 1565,
+  "depth": 0
+}

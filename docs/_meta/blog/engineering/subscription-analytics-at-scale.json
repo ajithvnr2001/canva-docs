@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/subscription-analytics-at-scale/",
+  "file": "blog/engineering/subscription-analytics-at-scale.md",
+  "title": "Subscription analytics at scale - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:17.448677+00:00",
+  "html_len": 74016,
+  "md_len": 19809,
+  "depth": 0
+}

@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/tag/bazel/",
+  "file": "blog/engineering/tag/bazel.md",
+  "title": "Bazel - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:18.127529+00:00",
+  "html_len": 30333,
+  "md_len": 1541,
+  "depth": 0
+}

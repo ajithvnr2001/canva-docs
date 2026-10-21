@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/blog/engineering/realtime-mouse-pointers/",
+  "file": "blog/engineering/realtime-mouse-pointers.md",
+  "title": "Real-time mouse pointers - Canva Engineering Blog",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T14:20:15.749205+00:00",
+  "html_len": 77323,
+  "md_len": 24500,
+  "depth": 0
+}
