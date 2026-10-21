@@ -1,12 +1,12 @@
 {
   "date": "2026-10-21",
-  "at": "2026-10-21T14:19:10.856772+00:00",
+  "at": "2026-10-21T14:33:27.908837+00:00",
   "new": 0,
   "stale_total": 0,
   "refreshed_stale": 0,
-  "manifest_urls": 926,
-  "no_lastmod_pool": 257,
-  "rotated": 257,
-  "targets": 257,
-  "total_index": 1028
+  "manifest_urls": 1141,
+  "no_lastmod_pool": 271,
+  "rotated": 271,
+  "targets": 271,
+  "total_index": 1319
 }
