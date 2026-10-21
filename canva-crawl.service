@@ -1,0 +1,21 @@
+[Unit]
+Description=Canva developer docs full crawl (resume-safe)
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/data
+StartLimitIntervalSec=3600
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/data/opencode/canva
+ExecStart=/usr/bin/python3 /data/opencode/canva/crawl_canva.py --concurrency 10
+Restart=on-failure
+RestartSec=120
+Nice=10
+StandardOutput=append:/data/opencode/canva/crawl.log
+StandardError=append:/data/opencode/canva/crawl.log
+
+[Install]
+WantedBy=multi-user.target
