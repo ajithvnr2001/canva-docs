@@ -99,10 +99,13 @@ async def main():
             verified[u] = fa
 
     live, lastmod = await live_sitemaps()
-    live_urls = set(live["docs"])
-    print(f"sitemap in-scope={len(live_urls)} | indexed={len(by_url)} | verified-known={len(verified)}")
+    sitemap_urls = set(live["docs"])
+    manifest_urls = set(await C.load_build_manifest_urls())
+    live_urls = sitemap_urls | manifest_urls
+    print(f"sitemap in-scope={len(sitemap_urls)} | build-manifest={len(manifest_urls)} | "
+          f"live-union={len(live_urls)} | indexed={len(by_url)} | verified-known={len(verified)}")
 
-    # 1) new
+    # 1) new — in sitemap or build manifest, not indexed yet
     new = sorted(live_urls - set(by_url))
     # 2) stale by sitemap lastmod
     stale = []
@@ -113,13 +116,14 @@ async def main():
             stale.append((lmd, u))
     stale.sort(reverse=True)
     refresh = [u for _, u in stale[:REFRESH_CAP]]
-    # 3) sitemap-missing (e.g. /docs/extensions/** and legacy app API pages)
-    missing = [u for u in by_url if u not in live_urls]
-    missing.sort(key=lambda u: verified.get(u, ""))
-    rotate = [u for u in missing if u not in set(new)][:ROTATION_CAP]
+    # 3) pages with no sitemap lastmod (extensions, Preview API, type declarations,
+    #    plus anything absent from both sources) — oldest verification first
+    pool = [u for u in by_url if u not in lastmod or u not in live_urls]
+    pool.sort(key=lambda u: verified.get(u, ""))
+    rotate = [u for u in pool if u not in set(new)][:ROTATION_CAP]
 
     print(f"new={len(new)} stale={len(stale)} (refresh {len(refresh)}) | "
-          f"sitemap-missing={len(missing)} (rotate {len(rotate)})")
+          f"no-lastmod pool={len(pool)} (rotate {len(rotate)})")
     for u in new[:20]:
         print(f"  NEW: {u}")
     for _, u in stale[:10]:
@@ -133,8 +137,8 @@ async def main():
         now = datetime.now(timezone.utc)
         stamp = {"date": now.strftime("%F"), "at": now.isoformat(),
                  "new": len(new), "stale_total": len(stale), "refreshed_stale": len(refresh),
-                 "sitemap_missing": len(missing), "rotated": len(rotate),
-                 "targets": len(targets), "total_index": len(by_url)}
+                 "manifest_urls": len(manifest_urls), "no_lastmod_pool": len(pool),
+                 "rotated": len(rotate), "targets": len(targets), "total_index": len(by_url)}
         (DOCS / "_last_verified.json").write_text(json.dumps(stamp, indent=2))
         try:
             mp = DOCS / "_manifest.json"

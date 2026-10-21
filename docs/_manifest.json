@@ -2,24 +2,22 @@
   "base": "https://www.canva.dev",
   "sitemap": "https://www.canva.dev/sitemap.xml",
   "sitemap_count": 771,
-  "total_seeds": 771,
-  "visited": 984,
+  "total_seeds": 1008,
+  "visited": 1028,
   "failed": 0,
   "done": true,
   "stats": {
-    "ok": 984,
+    "ok": 46,
     "fail": 0,
     "skipped_existing": 0,
     "by_method": {
-      "scrapling+scrapegraph": 973,
-      "httpx+scrapegraph": 1,
-      "crawl4ai+scrapegraph": 10
+      "scrapling+scrapegraph": 46
     },
     "by_host": {
-      "www.canva.dev": 984
+      "www.canva.dev": 46
     }
   },
-  "elapsed_sec": 274.7,
+  "elapsed_sec": 4.8,
   "out_root": "/data/opencode/canva/docs",
   "tools": [
     "scrapling (Fetcher)",
@@ -27,6 +25,7 @@
     "scrapegraph-ai (cleanup_html/convert_to_md)",
     "httpx (last resort)"
   ],
-  "generated_at": "2026-10-21T14:10:13.099514+00:00",
-  "last_verified": "2026-10-21"
+  "generated_at": "2026-10-21T14:16:32.868179+00:00",
+  "last_verified": "2026-10-21",
+  "build_manifest_count": 926
 }

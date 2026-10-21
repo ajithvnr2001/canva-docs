@@ -28,8 +28,8 @@ Same fallback ladder as the other corpora:
 ## Layout
 
 ```
-crawl_canva.py         # full crawl (sitemap seeds + link discovery, resume-safe)
-update_incremental.py  # daily: new + lastmod-stale + sitemap-missing rotation
+crawl_canva.py         # full crawl (sitemap + Next.js build manifest + link discovery)
+update_incremental.py  # daily: new, lastmod-stale, and no-lastmod rotation
 docs/                  # Markdown mirror (site /docs/ prefix stripped)
 docs/_meta/            # per-page fetch metadata (lastmod comparisons)
 docs/_index.jsonl      # URL → file index
@@ -56,9 +56,13 @@ Crash-safe: every page is written immediately (`docs/…md` + `docs/_meta/…jso
 
 - **GitHub Actions** `.github/workflows/update-docs.yml` runs daily at **09:45 UTC**
   (workflow_dispatch too). Each run refreshes three lanes:
-  **new** sitemap URLs, **lastmod-stale** pages (sitemap timestamp newer than our
-  verification), and **sitemap-missing** pages (`/docs/extensions/**` and legacy
-  app API pages are not in `sitemap.xml`) oldest-first, up to 300 per run.
+  **new** sitemap/build-manifest URLs, **lastmod-stale** pages (sitemap timestamp newer
+  than our verification), and **no-lastmod** pages (`/docs/extensions/**`, Preview API,
+  type-declaration pages, and anything absent from `sitemap.xml`) oldest-first, up to
+  300 per run.
+- The **Next.js build manifest** (`_buildManifest.js`, keyed by the live buildId) is used
+  as an authoritative route inventory: it catches pages that are absent from both
+  `sitemap.xml` and the static link graph (46 such pages found on 2026-10-21).
 - Writes are content-aware: if a refreshed page's Markdown is unchanged, the page and
   its metadata are left untouched (only `_verified.json` advances), so daily runs do
   not churn the mirror.
@@ -68,10 +72,14 @@ Crash-safe: every page is written immediately (`docs/…md` + `docs/_meta/…jso
 
 ## Results (verified 2026-10-21)
 
-- **982 pages** crawled end to end in **274.7 s** with **0 failures**
-  (973 via Scrapling, 8 via Crawl4AI JS fallback, 1 via httpx)
-- 771 in-scope sitemap URLs plus 213 link-discovered pages (211 retained after
-  dropping two interactive Storybook SPA shells)
-- ~23 MB Markdown mirror with 982 per-page metadata records
+- **1,028 pages** in the mirror with **0 failures**
+  (1,019 via Scrapling, 8 via Crawl4AI JS fallback, 1 via httpx)
+- Coverage verified against two independent inventories: **771/771** sitemap URLs and
+  **926/926** Next.js build-manifest routes, **0 missing**
+- 211 pages found by link discovery; **46 more** found only via the build manifest
+  (Preview API reference, TypeScript type declarations, Java/Spark SDK pages)
+- 16 Print API pages excluded because `robots.txt` disallows `/docs/print/*`;
+  blog, example assets and interactive Storybook shells are out of scope
+- ~23 MB Markdown mirror with 1,028 per-page metadata records
 - Sections: Apps SDK + REST API reference, Admin API, Audit Logs, Button (JS/HTML/Android/iOS),
   Print partnerships, SCIM, Extensions, Flourish Charts, Agents/Connect

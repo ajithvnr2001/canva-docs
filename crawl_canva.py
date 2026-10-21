@@ -133,6 +133,8 @@ def normalize_url(u, base=BASE_URL):
     if host != MAIN_HOST:
         return None
     path = p.path or "/"
+    if path == "/docs":
+        path = "/docs/"
     low = path.lower()
     for ext in BINARY_EXTS:
         if low.endswith(ext):
@@ -144,12 +146,12 @@ def normalize_url(u, base=BASE_URL):
     # interactive Storybook demos (no textual docs; SPA renders an error shell when static)
     if "/storybook/" in low or low.endswith("/storybook"):
         return None
-    if any(path.startswith(x) for x in EXCLUDED_PREFIXES):
+    def _excluded(pp):
+        return any(pp == x.rstrip("/") or pp.startswith(x) for x in EXCLUDED_PREFIXES)
+    if _excluded(path):
         return None
     if not any(path.startswith(x) for x in ALLOWED_PREFIXES):
         return None
-    if path == "/docs":
-        path = "/docs/"
     # strip /index suffixes if a page links them explicitly
     if path.endswith("/index.md"):
         path = path[:-len("/index.md")] + "/"
@@ -380,6 +382,35 @@ async def load_sitemap_urls():
     print(f"[sitemap] {len(urls)} in-scope urls")
     return sorted(urls), lastmod
 
+async def load_build_manifest_urls():
+    """Next.js build manifest = authoritative route inventory. Catches pages that are
+    absent from sitemap.xml *and* from the static link graph (e.g. API type-declaration
+    pages and the Preview API reference)."""
+    urls = set()
+    try:
+        async with httpx.AsyncClient(follow_redirects=True, timeout=30) as c:
+            h = await c.get(BASE_URL + "/docs/", timeout=30)
+            h.raise_for_status()
+            m = re.search(r'"buildId":"([^"]+)"', h.text)
+            if not m:
+                print("[manifest] buildId not found — skipped")
+                return []
+            bid = m.group(1)
+            r = await c.get(f"{BASE_URL}/_next/static/{bid}/_buildManifest.js", timeout=30)
+            if r.status_code != 200:
+                print(f"[manifest] buildManifest HTTP {r.status_code} for build {bid[:12]}")
+                return []
+            for route in re.findall(r'"(/[^"\\]*)"', r.text):
+                if not (route.startswith("/docs/") or route in ("/docs", "/agents")):
+                    continue
+                n = normalize_url(BASE_URL + route)
+                if n:
+                    urls.add(n)
+            print(f"[manifest] build {bid[:12]}… -> {len(urls)} in-scope routes")
+    except Exception as e:
+        print(f"[manifest] failed ({e}) — continuing with sitemap only")
+    return sorted(urls)
+
 # ---------- main crawl ----------
 async def main(max_pages=10000, concurrency=10):
     OUT_ROOT.mkdir(parents=True, exist_ok=True)
@@ -394,13 +425,14 @@ async def main(max_pages=10000, concurrency=10):
             print(f"[state] corrupt, starting fresh: {e}")
 
     sitemap_urls, lastmod = await load_sitemap_urls()
+    manifest_urls = await load_build_manifest_urls()
     seeds = []
     seen = set()
-    for u in sitemap_urls + [BASE_URL + "/docs/"]:
+    for u in sitemap_urls + manifest_urls + [BASE_URL + "/docs/"]:
         if u not in seen:
             seen.add(u)
             seeds.append(u)
-    print(f"[seed] sitemap in-scope={len(sitemap_urls)} total seeds={len(seeds)}")
+    print(f"[seed] sitemap={len(sitemap_urls)} manifest={len(manifest_urls)} total seeds={len(seeds)}")
 
     queue = asyncio.Queue()
     queued = set()
@@ -432,21 +464,23 @@ async def main(max_pages=10000, concurrency=10):
                 async with sem:
                     try:
                         data = await fetch_one(url)
+                        now_iso = datetime.now(timezone.utc).isoformat()
                         fpath.parent.mkdir(parents=True, exist_ok=True)
                         fm = (f"---\nurl: {url}\ntitle: {json.dumps(data['title'])[1:-1]}\n"
-                              f"method: {data['method']}\nfetched_at: {datetime.now(timezone.utc).isoformat()}\n---\n\n")
+                              f"method: {data['method']}\nfetched_at: {now_iso}\n---\n\n")
                         fpath.write_text(fm + data["markdown"], encoding="utf-8")
                         meta_rel = Path("_meta") / rel.with_suffix(".json")
                         meta_path = OUT_ROOT / meta_rel
                         meta_path.parent.mkdir(parents=True, exist_ok=True)
                         meta = {"url": url, "file": str(rel), "title": data["title"],
-                                "method": data["method"], "fetched_at": datetime.now(timezone.utc).isoformat(),
+                                "method": data["method"], "fetched_at": now_iso,
                                 "html_len": len(data.get("html", "")), "md_len": len(data.get("markdown", "")),
                                 "depth": depth}
                         if data.get("fallback"):
                             meta["fallback"] = data["fallback"]
                         meta_path.write_text(json.dumps(meta, indent=2), encoding="utf-8")
-                        visited[url] = {"file": str(rel), "title": data["title"], "method": data["method"]}
+                        visited[url] = {"file": str(rel), "title": data["title"], "method": data["method"],
+                                        "fetched_at": now_iso}
                         idx_f.write(json.dumps({"url": url, "file": str(rel), "title": data["title"], "method": data["method"]}) + "\n")
                         if len(visited) % 20 == 0:
                             idx_f.flush()
@@ -493,11 +527,26 @@ async def main(max_pages=10000, concurrency=10):
             pass
     STATE_FILE.write_text(json.dumps({"visited": visited, "failed": failed,
                                       "updated": datetime.now(timezone.utc).isoformat()}))
+    # persist verification ledger (drives stale/rotation decisions in the updater)
+    vpath = OUT_ROOT / "_verified.json"
+    ver = {}
+    if vpath.exists():
+        try:
+            ver = json.loads(vpath.read_text())
+        except Exception:
+            ver = {}
+    for u, info in visited.items():
+        fa = info.get("fetched_at") if isinstance(info, dict) else None
+        if fa:
+            ver[u] = fa
+    ver = {u: ver[u] for u in visited if u in ver}
+    vpath.write_text(json.dumps(ver, indent=1, sort_keys=True))
     done = len(failed) == 0 and len(visited) >= len(seeds)
     manifest = {
         "base": BASE_URL,
         "sitemap": SITEMAP_URL,
         "sitemap_count": len(sitemap_urls),
+        "build_manifest_count": len(manifest_urls),
         "total_seeds": len(seeds),
         "visited": len(visited),
         "failed": len(failed),
