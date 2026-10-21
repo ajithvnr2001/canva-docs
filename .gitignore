@@ -2,4 +2,4 @@
 *.pyc
 __pycache__/
 crawl_state.json
-tools/
+/tools/
