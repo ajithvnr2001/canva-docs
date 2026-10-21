@@ -30,12 +30,22 @@ failures (the stale-404 and Cloudflare-Access routes exact-excluded in `README.m
 2. **lastmod-stale** — sitemap `<lastmod>` newer than `docs/_verified.json`;
 3. **no-lastmod / not-in-inventory** — indexed pages without a sitemap timestamp or
    absent from the live union (current pool: 271, e.g. type-declaration pages and
-   link-only pages), oldest verification first, capped at 300/run.
+   link-only pages), oldest verification first, capped at 300/run;
+4. **linked** — internal URLs referenced by mirrored pages but missing from the index
+   and both inventories; healthy redirect aliases go to `docs/_redirects.json`, their
+   live 200 targets are fetched as new pages (self-healing gap lane).
 
 The build manifest (`_buildManifest.js`, fetched with the live buildId) is the
 authoritative whole-site route inventory and catches pages missing from both the
 sitemap and the static link graph. `--check-only` previews, `--limit N` smoke-tests,
 `--force URL` refetches one page.
+
+Completeness audit (also a CI step; exits 1 only on a live unmirrored page):
+
+```bash
+python3 audit_links.py          # sitemap + manifest + llms.txt + link sweep
+python3 audit_links.py --write  # refresh docs/_redirects.json
+```
 
 ## Daily updates
 

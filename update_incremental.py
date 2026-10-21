@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Incremental update for the whole www.canva.dev site (docs + blog + all sections).
 
-Three refresh lanes:
+Four refresh lanes:
   1. NEW      - live sitemap/build-manifest URL not indexed yet
   2. STALE    - sitemap <lastmod> newer than our last verification
   3. MISSING  - indexed pages with no sitemap lastmod or absent from the live union
                 (current rotation pool: 271 pages), refreshed oldest-first up to ROTATION_CAP
+  4. LINKED   - internal URLs referenced by mirrored pages but not indexed yet; redirect
+                aliases go to docs/_redirects.json, their live 200 targets are fetched
+                as new pages (self-heals pages linked before sitemap/manifest pick them up)
 
 Content-aware: a refreshed page is only rewritten when its Markdown body actually
 changed, so unchanged confirmations don't create 200-file commits. Verification
@@ -30,6 +33,7 @@ REFRESH_CAP = 1000   # max lastmod-stale refetches per run (newest first)
 ROTATION_CAP = 300   # max no-lastmod / not-in-inventory pages re-verified per run (oldest first)
 
 FRONTMATTER_RE = re.compile(r"\A---\n.*?\n---\n\n?", re.S)
+LINK_RE = re.compile(r'https?://(?:www\.)?canva\.dev/[^\s)\]"\'<>]+')
 
 def iso(s):
     try:
@@ -122,14 +126,66 @@ async def main():
     pool.sort(key=lambda u: verified.get(u, ""))
     rotate = [u for u in pool if u not in set(new)][:ROTATION_CAP]
 
+    # 4) linked — internal URLs referenced by mirrored pages but not indexed yet
+    #    (e.g. a page linked before sitemap/manifest pick it up). Redirect aliases are
+    #    recorded in docs/_redirects.json; their 200 targets are fetched as new pages.
+    linked = set()
+    for mfile in DOCS.rglob("*.md"):
+        if mfile.name.startswith("_"):
+            continue
+        for m in LINK_RE.findall(mfile.read_text(errors="replace")):
+            n = C.normalize_url(m.rstrip(".,;:`"))
+            if n:
+                linked.add(n)
+    candidates = [u for u in sorted(linked - set(by_url)) if u not in new]
+    linked_targets, aliases, broken = [], {}, []
+    if candidates:
+        import httpx as _httpx
+        with _httpx.Client(follow_redirects=True, timeout=25,
+                           headers={"User-Agent": "Mozilla/5.0"}) as hc:
+            for u in candidates:
+                try:
+                    r = hc.get(u)
+                except Exception as e:
+                    broken.append((u, f"ERR {str(e)[:50]}")); continue
+                eff = str(r.url)
+                if eff.rstrip("/") != u.rstrip("/"):
+                    tgt = C.normalize_url(eff)
+                    if r.status_code == 200 and tgt:
+                        aliases[u] = tgt
+                        if (tgt not in by_url and tgt not in live_urls
+                                and tgt not in linked_targets):
+                            linked_targets.append(tgt)
+                    else:
+                        broken.append((u, f"redirect -> HTTP {r.status_code}"))
+                elif r.status_code == 200:
+                    if u not in linked_targets:
+                        linked_targets.append(u)
+                else:
+                    broken.append((u, f"HTTP {r.status_code}"))
+        if aliases:
+            rp = DOCS / "_redirects.json"
+            prev = {}
+            if rp.exists():
+                try:
+                    prev = json.loads(rp.read_text())
+                except Exception:
+                    prev = {}
+            prev.update(aliases)
+            rp.write_text(json.dumps(prev, indent=1, sort_keys=True))
+    print(f"linked lane: candidates={len(candidates)} new-targets={len(linked_targets)} "
+          f"aliases={len(aliases)} broken={len(broken)}")
+    for u, why in broken[:5]:
+        print(f"  linked-broken: {u} ({why})")
+
     print(f"new={len(new)} stale={len(stale)} (refresh {len(refresh)}) | "
-          f"no-lastmod pool={len(pool)} (rotate {len(rotate)})")
+          f"no-lastmod pool={len(pool)} (rotate {len(rotate)}) | linked-new={len(linked_targets)}")
     for u in new[:20]:
         print(f"  NEW: {u}")
     for _, u in stale[:10]:
         print(f"  STALE: {u}")
 
-    targets = [a.force] if a.force else new + refresh + rotate
+    targets = [a.force] if a.force else new + refresh + rotate + linked_targets
     if a.limit:
         targets = targets[:a.limit]
 
@@ -138,7 +194,9 @@ async def main():
         stamp = {"date": now.strftime("%F"), "at": now.isoformat(),
                  "new": len(new), "stale_total": len(stale), "refreshed_stale": len(refresh),
                  "manifest_urls": len(manifest_urls), "no_lastmod_pool": len(pool),
-                 "rotated": len(rotate), "targets": len(targets), "total_index": len(by_url)}
+                 "rotated": len(rotate), "linked_new": len(linked_targets),
+                 "aliases_recorded": len(aliases), "targets": len(targets),
+                 "total_index": len(by_url)}
         (DOCS / "_last_verified.json").write_text(json.dumps(stamp, indent=2))
         try:
             mp = DOCS / "_manifest.json"

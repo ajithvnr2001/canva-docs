@@ -69,6 +69,8 @@ python3 -m playwright install chromium
 python3 crawl_canva.py --concurrency 10          # resume by re-running
 python3 update_incremental.py --check-only       # what would the daily run fetch?
 python3 update_incremental.py --concurrency 10   # new + stale refresh
+python3 audit_links.py                           # completeness audit (exit 1 on a live gap)
+python3 audit_links.py --write                   # also refresh docs/_redirects.json
 ```
 
 Crash-safe: every page is written immediately (`docs/…md` + `docs/_meta/…json`) and
@@ -77,10 +79,14 @@ Crash-safe: every page is written immediately (`docs/…md` + `docs/_meta/…jso
 ## Automation
 
 - **GitHub Actions** `.github/workflows/update-docs.yml` runs daily at **09:45 UTC**
-  (workflow_dispatch too). Each run refreshes three lanes:
+  (workflow_dispatch too). Each run refreshes four lanes:
   **new** sitemap/build-manifest URLs, **lastmod-stale** pages (sitemap timestamp newer
-  than our verification), and **no-lastmod / not-in-inventory** pages oldest-first,
-  up to 300 per run (current pool: 271).
+  than our verification), **no-lastmod / not-in-inventory** pages oldest-first up to
+  300 per run (current pool: 271), and **linked** — internal URLs referenced by
+  mirrored pages but missing from both inventories; redirect aliases are recorded in
+  `docs/_redirects.json` and their live 200 targets are fetched as new pages.
+- A final **link-domain audit** step (`audit_links.py`) fails the run only if a live
+  page is unmirrored, so gaps cannot stay silent.
 - The **whole-site Next.js build manifest** (`_buildManifest.js`, keyed by the live
   buildId) is the authoritative route inventory. In addition, 33 pages are reachable
   only through the link graph beyond both the sitemap and manifest (Apps SDK API
@@ -91,6 +97,24 @@ Crash-safe: every page is written immediately (`docs/…md` + `docs/_meta/…jso
 - **VM unit** `canva-crawl.service` handles the initial/resume crawl; `boot.sh` is wired
   into `/data/opencode/boot-all.sh` so a reboot or reprovision restarts it automatically.
   After completion the unit stays installed but disabled (`docs/_manifest.json` `done`).
+
+## URL accounting (2026-10-21)
+
+Every URL under `www.canva.dev` is accounted for:
+
+- **1,319 mirrored pages** (canonical URLs, 0 fetch failures)
+- **57 healthy redirect aliases** recorded in `docs/_redirects.json`
+  (legacy paths such as `/docs/apps/examples/x/` → `/docs/apps/feature-examples/x/`)
+- **1 stale alias** redirecting to a 404 (site-side broken link:
+  `/docs/apps/examples/multiple-intents/`)
+- Excluded by design: 10 stale build-manifest routes returning 404, 2 Cloudflare-Access
+  pages, and non-page/duplicate representations (see Scope & exceptions)
+
+Independent checks, all clean at the same time: sitemap **1,048/1,048**, whole-site
+build manifest **1,141/1,141**, `llms.txt` route inventories (**626** canonical URLs),
+section-hub link graph, full-mirror link sweep (**1,377** internal URLs → 0 live gaps),
+and search-engine / Common Crawl spot checks (only redirect aliases surfaced).
+Re-run anytime: `python3 audit_links.py`.
 
 ## Results (verified 2026-10-21)
 
