@@ -2,9 +2,6 @@
   "url": "https://www.canva.dev/docs/print-partnerships/support/",
   "file": "print-partnerships/support.md",
   "title": "Support - Support - Canva Print Partnerships Documentation",
-  "method": "crawl4ai+scrapegraph (scrapling: scrapling thin content (597 chars), fallback to crawl4ai)",
-  "fetched_at": "2026-10-21T13:59:02.552973+00:00",
-  "html_len": 50653,
-  "md_len": 1157,
-  "depth": 1
+  "method": "httpx+scrapegraph (scrapling: scrapling thin content (597 chars), fallback to crawl4ai | crawl4ai: crawl4ai failed: Unexpected error in _crawl_web at line 1299 in create_browser_context (../../../../../opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/crawl4ai/browser_manager.py):\nError: Browser is not available. It may have been closed, crashed, or not yet started. Ensure the browser is running before creating new contexts.\n\nCode context:\n1294                   raise RuntimeError(\n1295                       \"Cannot create new browser contexts when using \"\n1296                       \"use_persistent_context=True. Persistent context uses a \"\n1297                       \"single shared context.\"\n1298                   )\n1299 \u2192             raise RuntimeError(\n1300                   \"Browser is not available. It may have been closed, crashed, \"\n1301                   \"or not yet started. Ensure the browser is running before \"\n1302                   \"creating new contexts.\"\n1303               )\n1304           # Base settings)",
+  "fetched_at": "2026-10-21T14:04:58.832201+00:00"
 }
