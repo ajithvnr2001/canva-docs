@@ -1,19 +1,45 @@
 #!/usr/bin/env python3
-"""Incremental update for www.canva.dev/docs: crawl NEW pages and refetch pages
-whose sitemap <lastmod> is newer than our fetched_at (newest first).
+"""Incremental update for www.canva.dev/docs.
+
+Three refresh lanes:
+  1. NEW      - in sitemap but not indexed yet
+  2. STALE    - sitemap <lastmod> newer than our last verification
+  3. MISSING  - indexed pages absent from the sitemap (e.g. /docs/extensions/**),
+                refreshed oldest-first every run up to ROTATION_CAP
+
+Content-aware: a refreshed page is only rewritten when its Markdown body actually
+changed, so unchanged confirmations don't create 200-file commits. Verification
+timestamps live in docs/_verified.json (committed, so GitHub Actions is stateless).
+
 Usage:
   python3 update_incremental.py --check-only
   python3 update_incremental.py
-  python3 update_incremental.py --force https://www.canva.dev/docs/apps/
+  python3 update_incremental.py --limit 5            # smoke test
+  python3 update_incremental.py --force URL          # refetch one page
 """
 import argparse, json, os, re, pathlib, asyncio, sys
+from datetime import datetime, timezone
 from urllib.parse import urlparse, urljoin, urldefrag
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import crawl_canva as C
 
 DOCS = C.OUT_ROOT
 STATE = C.STATE_FILE
-REFRESH_CAP = 1000  # max stale-page refetches per run (newest first); site is small
+VERIFIED = DOCS / "_verified.json"
+REFRESH_CAP = 1000   # max lastmod-stale refetches per run (newest first)
+ROTATION_CAP = 300   # max sitemap-missing pages re-verified per run (oldest first)
+
+FRONTMATTER_RE = re.compile(r"\A---\n.*?\n---\n\n?", re.S)
+
+def iso(s):
+    try:
+        return datetime.fromisoformat(str(s).replace("Z", "+00:00"))
+    except Exception:
+        return None
+
+def body_of(text):
+    m = FRONTMATTER_RE.match(text)
+    return text[m.end():] if m else text
 
 async def live_sitemaps():
     import httpx, xml.etree.ElementTree as ET
@@ -50,50 +76,65 @@ async def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--check-only", action="store_true")
     ap.add_argument("--force", default=None)
+    ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--concurrency", type=int, default=10)
     a = ap.parse_args()
+
     idx = [json.loads(l) for l in open(DOCS / "_index.jsonl")] if (DOCS / "_index.jsonl").exists() else []
-    indexed = set(r["url"] for r in idx)
+    by_url = {r["url"]: r for r in idx}
+    verified = {}
+    if VERIFIED.exists():
+        try:
+            verified = json.loads(VERIFIED.read_text())
+        except Exception as e:
+            print(f"[verified] unreadable, rebuilding: {e}")
+    # backfill verification times from page metadata on first run after upgrade
+    for mfile in (DOCS / "_meta").rglob("*.json"):
+        try:
+            m = json.loads(mfile.read_text())
+        except Exception:
+            continue
+        u, fa = m.get("url"), m.get("fetched_at")
+        if u and fa and u not in verified:
+            verified[u] = fa
+
     live, lastmod = await live_sitemaps()
-    new = {}
-    for k, urls in live.items():
-        miss = [u for u in urls if u not in indexed]
-        new[k] = miss
-        print(f"{k}: live={len(urls)} indexed={len(indexed)} new={len(miss)}")
-        for u in miss[:20]:
-            print(f"  NEW: {u}")
-    total_new = sum(len(v) for v in new.values())
-    # stale = sitemap lastmod newer than our fetched_at
+    live_urls = set(live["docs"])
+    print(f"sitemap in-scope={len(live_urls)} | indexed={len(by_url)} | verified-known={len(verified)}")
+
+    # 1) new
+    new = sorted(live_urls - set(by_url))
+    # 2) stale by sitemap lastmod
     stale = []
-    if lastmod:
-        for mfile in (DOCS / "_meta").rglob("*.json"):
-            try:
-                m = json.loads(mfile.read_text())
-            except Exception:
-                continue
-            u, fa = m.get("url"), m.get("fetched_at")
-            d = lastmod.get(u) if u else None
-            if not u or not fa or not d:
-                continue
-            if u in set(sum(new.values(), [])):
-                continue
-            try:
-                from datetime import datetime as _dt
-                if _dt.fromisoformat(d.replace("Z", "+00:00")) > _dt.fromisoformat(fa):
-                    stale.append((d, u))
-            except Exception:
-                pass
+    for u in by_url:
+        lm, va = lastmod.get(u), verified.get(u)
+        lmd, vad = iso(lm) if lm else None, iso(va) if va else None
+        if lmd and vad and lmd > vad:
+            stale.append((lmd, u))
     stale.sort(reverse=True)
     refresh = [u for _, u in stale[:REFRESH_CAP]]
-    print(f"stale: {len(stale)}, refreshing newest {len(refresh)}")
-    targets = [a.force] if a.force else [u for v in new.values() for u in v] + refresh
+    # 3) sitemap-missing (e.g. /docs/extensions/** and legacy app API pages)
+    missing = [u for u in by_url if u not in live_urls]
+    missing.sort(key=lambda u: verified.get(u, ""))
+    rotate = [u for u in missing if u not in set(new)][:ROTATION_CAP]
+
+    print(f"new={len(new)} stale={len(stale)} (refresh {len(refresh)}) | "
+          f"sitemap-missing={len(missing)} (rotate {len(rotate)})")
+    for u in new[:20]:
+        print(f"  NEW: {u}")
+    for _, u in stale[:10]:
+        print(f"  STALE: {u}")
+
+    targets = [a.force] if a.force else new + refresh + rotate
+    if a.limit:
+        targets = targets[:a.limit]
+
     if not a.check_only:
-        from datetime import datetime, timezone
         now = datetime.now(timezone.utc)
         stamp = {"date": now.strftime("%F"), "at": now.isoformat(),
-                 "new": {k: len(v) for k, v in new.items()},
-                 "refreshed": len(refresh), "stale_total": len(stale),
-                 "total_index": len(indexed) + (1 if a.force else 0)}
+                 "new": len(new), "stale_total": len(stale), "refreshed_stale": len(refresh),
+                 "sitemap_missing": len(missing), "rotated": len(rotate),
+                 "targets": len(targets), "total_index": len(by_url)}
         (DOCS / "_last_verified.json").write_text(json.dumps(stamp, indent=2))
         try:
             mp = DOCS / "_manifest.json"
@@ -114,62 +155,88 @@ async def main():
                     print(f"readme date -> {stamp['date']}")
         except Exception as e:
             print("readme stamp skip:", e)
-        print(f"stamped {stamp['date']} (new={total_new} refresh={len(refresh)})")
-    if a.check_only or not targets:
-        print("check-only" if a.check_only else "no new docs — up to date")
+        print(f"stamped {stamp['date']} | targets={len(targets)}")
+
+    if a.check_only:
+        print("check-only — nothing fetched")
         return
-    print(f"fetching {len(targets)} docs ({total_new} new + {len(refresh)} refresh)...")
+    if not targets:
+        print("no targets — up to date")
+        return
+
+    print(f"fetching {len(targets)} docs...")
     st = json.load(open(STATE)) if STATE.exists() else {"visited": {}, "failed": {}}
     vs, failed = st.get("visited", {}), st.get("failed", {})
-    from datetime import datetime, timezone
     lines = [json.loads(l) for l in open(DOCS / "_index.jsonl")] if (DOCS / "_index.jsonl").exists() else []
-    if len({r["url"] for r in lines}) != len(lines):  # drop dupes
-        seen, ded = set(), []
-        for r in reversed(lines):
-            if r["url"] not in seen:
-                seen.add(r["url"]); ded.append(r)
-        lines = list(reversed(ded))
+    # de-dupe index, keep last occurrence
+    seen, ded = set(), []
+    for r in reversed(lines):
+        if r["url"] not in seen:
+            seen.add(r["url"]); ded.append(r)
+    lines = list(reversed(ded))
     pos = {r["url"]: i for i, r in enumerate(lines)}
+
     sem = asyncio.Semaphore(a.concurrency)
-    ok = fail = 0
+    ok = fail = changed = same = 0
 
     async def one(url):
-        nonlocal ok, fail
+        nonlocal ok, fail, changed, same
         async with sem:
             try:
                 data = await C.fetch_one(url)
+                verbatim = datetime.now(timezone.utc).isoformat()
                 rel = C.url_to_relpath(url)
                 fp = DOCS / rel
+                old_body = None
+                if fp.exists():
+                    try:
+                        old_body = body_of(fp.read_text(encoding="utf-8"))
+                    except Exception:
+                        old_body = None
+                if old_body is not None and old_body.strip() == data["markdown"].strip():
+                    verified[url] = verbatim
+                    vs[url] = vs.get(url, {"file": str(rel), "title": data["title"], "method": data["method"]})
+                    same += 1
+                    ok += 1
+                    print(f"[same] {url}")
+                    return
                 fp.parent.mkdir(parents=True, exist_ok=True)
                 fm = (f"---\nurl: {url}\ntitle: {json.dumps(data['title'])[1:-1]}\n"
-                      f"method: {data['method']}\nfetched_at: {datetime.now(timezone.utc).isoformat()}\n---\n\n")
+                      f"method: {data['method']}\nfetched_at: {verbatim}\n---\n\n")
                 fp.write_text(fm + data["markdown"], encoding="utf-8")
                 mr = pathlib.Path("_meta") / rel.with_suffix(".json")
                 (DOCS / mr).parent.mkdir(parents=True, exist_ok=True)
                 (DOCS / mr).write_text(json.dumps({"url": url, "file": str(rel), "title": data["title"],
-                                                   "method": data["method"],
-                                                   "fetched_at": datetime.now(timezone.utc).isoformat()}, indent=2))
+                                                   "method": data["method"], "fetched_at": verbatim}, indent=2))
                 vs[url] = {"file": str(rel), "title": data["title"], "method": data["method"]}
                 row = {"url": url, "file": str(rel), "title": data["title"], "method": data["method"]}
                 if url in pos:
                     lines[pos[url]] = row
-                    print(f"[refresh] {url}")
+                    print(f"[changed] {url}")
                 else:
                     pos[url] = len(lines); lines.append(row)
                     print(f"[new] {url}")
+                verified[url] = verbatim
+                changed += 1
                 ok += 1
             except Exception as e:
-                failed[url] = str(e)[:300]; fail += 1; print(f"[fail] {url}: {e}")
+                failed[url] = str(e)[:300]
+                fail += 1
+                print(f"[fail] {url}: {e}")
 
     await asyncio.gather(*(one(u) for u in targets))
+    # only keep verification entries for indexed pages
+    all_urls = {r["url"] for r in lines}
+    verified = {u: verified[u] for u in all_urls if u in verified}
     (DOCS / "_index.jsonl").write_text("".join(json.dumps(r) + "\n" for r in lines))
+    VERIFIED.write_text(json.dumps(verified, indent=1, sort_keys=True))
     try:
         if C._crawler is not None:
             await C._crawler.close()
     except Exception:
         pass
     open(STATE, "w").write(json.dumps({"visited": vs, "failed": failed}))
-    print(f"done: ok={ok} fail={fail}")
+    print(f"done: fetched={ok} changed={changed} unchanged={same} fail={fail}")
 
 if __name__ == "__main__":
     asyncio.run(main())

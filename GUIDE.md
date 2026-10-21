@@ -19,6 +19,20 @@ python3 -c "import json; m=json.load(open('docs/_manifest.json')); print(m['visi
 
 `done: true` means every in-scope sitemap page was visited with zero failures.
 
+## Daily update lanes
+
+`update_incremental.py` (Actions, 09:45 UTC) processes:
+
+1. **new** — sitemap URLs not indexed yet;
+2. **lastmod-stale** — sitemap `<lastmod>` newer than `docs/_verified.json`;
+3. **sitemap-missing** — indexed pages absent from `sitemap.xml` (the whole
+   `/docs/extensions/**` tree + ~100 app API pages), oldest verification first,
+   capped at 300/run.
+
+Unchanged pages are not rewritten (no frontmatter churn); only `_verified.json`
+advances. Use `--check-only` to preview, `--limit N` for a smoke test,
+`--force URL` for one page.
+
 ## Daily updates
 
 GitHub Actions handles it (`.github/workflows/update-docs.yml`, 09:45 UTC):

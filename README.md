@@ -28,10 +28,11 @@ Same fallback ladder as the other corpora:
 
 ```
 crawl_canva.py         # full crawl (sitemap seeds + link discovery, resume-safe)
-update_incremental.py  # daily: new pages + lastmod-stale refreshes
+update_incremental.py  # daily: new + lastmod-stale + sitemap-missing rotation
 docs/                  # Markdown mirror (site /docs/ prefix stripped)
 docs/_meta/            # per-page fetch metadata (lastmod comparisons)
 docs/_index.jsonl      # URL → file index
+docs/_verified.json    # URL → last verification time (drives stale/rotation)
 docs/_manifest.json    # crawl stats / done flag
 canva-crawl.service    # VM unit to run/resume the crawl in the background
 boot.sh                # reinstall + resume after VM reboot/reallocation
@@ -53,9 +54,16 @@ Crash-safe: every page is written immediately (`docs/…md` + `docs/_meta/…jso
 ## Automation
 
 - **GitHub Actions** `.github/workflows/update-docs.yml` runs daily at **09:45 UTC**
-  (workflow_dispatch too) and commits new/changed docs.
+  (workflow_dispatch too). Each run refreshes three lanes:
+  **new** sitemap URLs, **lastmod-stale** pages (sitemap timestamp newer than our
+  verification), and **sitemap-missing** pages (`/docs/extensions/**` and legacy
+  app API pages are not in `sitemap.xml`) oldest-first, up to 300 per run.
+- Writes are content-aware: if a refreshed page's Markdown is unchanged, the page and
+  its metadata are left untouched (only `_verified.json` advances), so daily runs do
+  not churn the mirror.
 - **VM unit** `canva-crawl.service` handles the initial/resume crawl; `boot.sh` is wired
   into `/data/opencode/boot-all.sh` so a reboot or reprovision restarts it automatically.
+  After completion the unit stays installed but disabled (`docs/_manifest.json` `done`).
 
 ## Results (verified 2026-10-21)
 
