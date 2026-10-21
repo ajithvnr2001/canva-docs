@@ -1,0 +1,10 @@
+{
+  "url": "https://www.canva.dev/docs/extensions/changelog/",
+  "file": "extensions/changelog.md",
+  "title": "Changelog - Canva Extensions Documentation",
+  "method": "scrapling+scrapegraph",
+  "fetched_at": "2026-10-21T13:58:41.175886+00:00",
+  "html_len": 60194,
+  "md_len": 5160,
+  "depth": 2
+}

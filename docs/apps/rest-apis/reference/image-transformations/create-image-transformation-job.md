@@ -1,0 +1,1321 @@
+---
+url: https://www.canva.dev/docs/apps/rest-apis/reference/image-transformations/create-image-transformation-job/
+title: Create image transformation job - Canva REST API reference - Canva Developers SDK Documentation
+method: scrapling+scrapegraph
+fetched_at: 2026-10-21T13:56:36.452363+00:00
+---
+
+# Create image transformation job - Canva REST API reference - Canva Developers SDK Documentation
+
+> Source: https://www.canva.dev/docs/apps/rest-apis/reference/image-transformations/create-image-transformation-job/
+
+Canva REST API reference
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/)
+
+Authentication
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/authentication/)[Generate access token](https://www.canva.dev/docs/apps/rest-apis/reference/authentication/generate-access-token/)[Introspect access token](https://www.canva.dev/docs/apps/rest-apis/reference/authentication/introspect-access-token/)[Revoke token](https://www.canva.dev/docs/apps/rest-apis/reference/authentication/revoke-token/)
+
+Analytics
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/analytics/)[Get design analytics](https://www.canva.dev/docs/apps/rest-apis/reference/analytics/get-design-analytics/)[Get design analytics links](https://www.canva.dev/docs/apps/rest-apis/reference/analytics/get-design-analytics-links/)[Get design analytics page views](https://www.canva.dev/docs/apps/rest-apis/reference/analytics/get-design-analytics-page-views/)[Get design analytics viewers](https://www.canva.dev/docs/apps/rest-apis/reference/analytics/get-design-analytics-viewers/)[Get design analytics views over time](https://www.canva.dev/docs/apps/rest-apis/reference/analytics/get-design-analytics-views-over-time/)
+
+Assets
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/assets/)[Create asset upload job](https://www.canva.dev/docs/apps/rest-apis/reference/assets/create-asset-upload-job/)[Get asset upload job](https://www.canva.dev/docs/apps/rest-apis/reference/assets/get-asset-upload-job/)[Create asset upload job via URL](https://www.canva.dev/docs/apps/rest-apis/reference/assets/create-url-asset-upload-job/)[Get asset upload job via URL](https://www.canva.dev/docs/apps/rest-apis/reference/assets/get-url-asset-upload-job/)[Get asset](https://www.canva.dev/docs/apps/rest-apis/reference/assets/get-asset/)[Update asset](https://www.canva.dev/docs/apps/rest-apis/reference/assets/update-asset/)[Delete asset](https://www.canva.dev/docs/apps/rest-apis/reference/assets/delete-asset/)
+
+Autofill
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/autofills/)[Create design autofill job](https://www.canva.dev/docs/apps/rest-apis/reference/autofills/create-design-autofill-job/)[Get design autofill job](https://www.canva.dev/docs/apps/rest-apis/reference/autofills/get-design-autofill-job/)
+
+Brand templates
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/brand-templates/)[Publish brand template](https://www.canva.dev/docs/apps/rest-apis/reference/brand-templates/publish-brand-template/)[Get brand template](https://www.canva.dev/docs/apps/rest-apis/reference/brand-templates/get-brand-template/)[Get brand template dataset](https://www.canva.dev/docs/apps/rest-apis/reference/brand-templates/get-brand-template-dataset/)[List brand templates](https://www.canva.dev/docs/apps/rest-apis/reference/brand-templates/list-brand-templates/)
+
+Comments
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/comments/)[Create thread](https://www.canva.dev/docs/apps/rest-apis/reference/comments/create-thread/)[Create reply](https://www.canva.dev/docs/apps/rest-apis/reference/comments/create-reply/)[Get thread](https://www.canva.dev/docs/apps/rest-apis/reference/comments/get-thread/)[Get reply](https://www.canva.dev/docs/apps/rest-apis/reference/comments/get-reply/)[List replies](https://www.canva.dev/docs/apps/rest-apis/reference/comments/list-replies/)[Create comment (deprecated)](https://www.canva.dev/docs/apps/rest-apis/reference/comments/create-comment/)
+
+Designs
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/designs/)[Create design](https://www.canva.dev/docs/apps/rest-apis/reference/designs/create-design/)[List designs](https://www.canva.dev/docs/apps/rest-apis/reference/designs/list-designs/)[Get design](https://www.canva.dev/docs/apps/rest-apis/reference/designs/get-design/)[Get design pages](https://www.canva.dev/docs/apps/rest-apis/reference/designs/get-design-pages/)[Get design export formats](https://www.canva.dev/docs/apps/rest-apis/reference/designs/get-design-export-formats/)[Get design dataset](https://www.canva.dev/docs/apps/rest-apis/reference/designs/get-design-dataset/)
+
+Design imports
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/design-imports/)[Create design import job](https://www.canva.dev/docs/apps/rest-apis/reference/design-imports/create-design-import-job/)[Get design import job](https://www.canva.dev/docs/apps/rest-apis/reference/design-imports/get-design-import-job/)[Create image-to-design import job](https://www.canva.dev/docs/apps/rest-apis/reference/design-imports/create-image-to-design-import-job/)[Get image-to-design import job](https://www.canva.dev/docs/apps/rest-apis/reference/design-imports/get-image-to-design-import-job/)[Create URL import job](https://www.canva.dev/docs/apps/rest-apis/reference/design-imports/create-url-import-job/)[Get URL import job](https://www.canva.dev/docs/apps/rest-apis/reference/design-imports/get-url-import-job/)
+
+Exports
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/exports/)[Create design export job](https://www.canva.dev/docs/apps/rest-apis/reference/exports/create-design-export-job/)[Get design export job](https://www.canva.dev/docs/apps/rest-apis/reference/exports/get-design-export-job/)
+
+Folders
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/folders/)[Create folder](https://www.canva.dev/docs/apps/rest-apis/reference/folders/create-folder/)[Get folder](https://www.canva.dev/docs/apps/rest-apis/reference/folders/get-folder/)[Update folder](https://www.canva.dev/docs/apps/rest-apis/reference/folders/update-folder/)[Delete folder](https://www.canva.dev/docs/apps/rest-apis/reference/folders/delete-folder/)[List folder items](https://www.canva.dev/docs/apps/rest-apis/reference/folders/list-folder-items/)[Move folder item](https://www.canva.dev/docs/apps/rest-apis/reference/folders/move-folder-item/)
+
+Generations
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/generations/)[Create design generation job](https://www.canva.dev/docs/apps/rest-apis/reference/generations/create-design-generation-job/)[Create image generation job](https://www.canva.dev/docs/apps/rest-apis/reference/generations/create-image-generation-job/)[Get design generation job](https://www.canva.dev/docs/apps/rest-apis/reference/generations/get-design-generation-job/)[Get image generation job](https://www.canva.dev/docs/apps/rest-apis/reference/generations/get-image-generation-job/)
+
+Image transformations
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/image-transformations/)[Create image transformation job](https://www.canva.dev/docs/apps/rest-apis/reference/image-transformations/create-image-transformation-job/)[Get image transformation job](https://www.canva.dev/docs/apps/rest-apis/reference/image-transformations/get-image-transformation-job/)
+
+Merges
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/merges/)[Create design merge job](https://www.canva.dev/docs/apps/rest-apis/reference/merges/create-design-merge-job/)[Get design merge job](https://www.canva.dev/docs/apps/rest-apis/reference/merges/get-design-merge-job/)
+
+Resizes
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/resizes/)[Create design resize job](https://www.canva.dev/docs/apps/rest-apis/reference/resizes/create-design-resize-job/)[Get design resize job](https://www.canva.dev/docs/apps/rest-apis/reference/resizes/get-design-resize-job/)
+
+Users
+
+[Overview](https://www.canva.dev/docs/apps/rest-apis/reference/users/)[Get current user](https://www.canva.dev/docs/apps/rest-apis/reference/users/users-me/)[Get current user profile](https://www.canva.dev/docs/apps/rest-apis/reference/users/users-profile/)[Get user capabilities](https://www.canva.dev/docs/apps/rest-apis/reference/users/get-user-capabilities/)
+
+# Create image transformation job
+
+Copy page
+
+This API is currently provided as a preview. Be aware of the following:
+
+  * There might be unannounced breaking changes.
+  * Any breaking changes to preview APIs won't produce a new [API version](https://www.canva.dev/docs/apps/rest-apis/versions/).
+  * Public apps that use preview APIs will not pass the review process, and can't be made available to all Canva users.
+
+
+
+Starts a new [asynchronous job](https://www.canva.dev/docs/apps/rest-apis/requests-responses/#asynchronous-job-endpoints) to apply one or more transformations to an image asset. A successful job produces a single new image asset with all of the requested transformations applied. The source asset isn't modified, and intermediate results aren't returned.
+
+The request requires the ID of the source asset and at least one transformation. The source asset must be an image asset, such as one created using the [Asset upload APIs⁠(opens in a new tab or window)](https://www.canva.dev/docs/apps/rest-apis/reference/assets/).
+
+Transformations are applied in the order provided, with each one stacked on the result of the previous one.
+
+Starting a job consumes the user's [AI credit allowance⁠(opens in a new tab or window)](https://www.canva.com/help/ai-access/). If the user has reached their AI allowance limit, the request returns a `429` error with the `credit_quota_exceeded` code. Polling for the result of a job using the [Get image transformation job API](https://www.canva.dev/docs/apps/rest-apis/reference/image-transformations/get-image-transformation-job/) doesn't consume any of the allowance.
+
+For more information on the workflow for using asynchronous jobs, see [API requests and responses](https://www.canva.dev/docs/apps/rest-apis/requests-responses/#asynchronous-job-endpoints). You can check the status and get the results of image transformation jobs created with this API using the [Get image transformation job API](https://www.canva.dev/docs/apps/rest-apis/reference/image-transformations/get-image-transformation-job/).
+
+## HTTP method and URL path
+
+POST` https://api.canva.com/rest/v1/image-transformations`
+
+This operation is rate limited to 20 requests per minute for each user of your app.
+
+## Authentication and authorization
+
+This endpoint requires a valid access token that acts on behalf of a user. For more information, see [Generate an access token](https://www.canva.dev/docs/apps/rest-apis/reference/authentication/generate-access-token/).
+
+### Scopes
+
+The access token must have all the following [scopes](https://www.canva.dev/docs/apps/rest-apis/scopes/) (permissions):
+
+  * `asset:read`
+  * `asset:write`
+
+
+
+## Header parameters
+
+`Authorization``string`
+
+Required
+
+Provides credentials to authenticate the request, in the form of a `Bearer` token.
+
+For example: `Authorization: Bearer {token}`
+
+`Content-Type``string`
+
+Required
+
+Indicates the media type of the information sent in the request. This must be set to `application/json`.
+
+For example: `Content-Type: application/json`
+
+## Body parameters
+
+Expand all
+
+`asset_id``string`
+
+Required
+
+The ID of the source asset to transform. The asset must be an image asset; referencing any other asset type (such as a video) fails with an `unsupported_content_type` error.
+
+The asset must also have finished uploading. An asset that is still uploading has no image to transform yet and fails with an `asset_not_ready` error. If you've just created the asset, poll its upload job — for example with the [Get asset upload job⁠(opens in a new tab or window)](https://www.canva.dev/docs/apps/rest-apis/reference/assets/get-asset-upload-job/) endpoint — until it returns a `success` status before starting a transformation.
+
+`transformations``ImageTransformationType[]`
+
+Required
+
+The transformations to apply, in order. Must contain at least one transformation. Each transformation is stacked on the result of the previous one. The job's result is a single new image asset with all of the transformations applied; intermediate results are not returned.
+
+**Minimum items:** `1`
+
+**Maximum items:** `20`
+
+Removes the background from an image, keeping the foreground subject. The resulting image has a transparent background. This transformation takes no parameters.
+
+The output image is limited to a maximum of 10 megapixels. If the source image is larger, the output image is scaled down to stay within this limit.
+
+Requires the user to have the `background_removal` capability. To check this before creating a job, use the [Get user capabilities API](https://www.canva.dev/docs/apps/rest-apis/reference/users/get-user-capabilities/).
+
+`type``string`
+
+Required
+
+The type of transformation to apply. Currently, the only supported value is `background_removal`.
+
+**Available values:** The only valid value is `background_removal`.
+
+`name``string`
+
+Optional
+
+A name for the new image asset that the job produces. Canva doesn't localize this value, so provide a name in the user's language. When omitted, the new asset inherits the name of the source asset.
+
+**Minimum length:** `1`
+
+**Maximum length:** `255`
+
+## Example request
+
+Examples for using the `/v1/image-transformations` endpoint:
+
+cURLcURL
+
+Node.jsNode.js
+
+JavaJava
+
+PythonPython
+
+C#C#
+
+GoGo
+
+PHPPHP
+
+RubyRuby
+    
+    
+    curl --request POST 'https://api.canva.com/rest/v1/image-transformations' \
+    
+    --header 'Authorization: Bearer {token}' \
+    
+    --header 'Content-Type: application/json' \
+    
+    --data '{
+    
+      "asset_id": "Msd59349ff",
+    
+      "name": "My Awesome Upload with the background removed",
+    
+      "transformations": [
+    
+        {
+    
+          "type": "background_removal"
+    
+        }
+    
+      ]
+    
+    }'
+
+SH
+
+Copy
+    
+    
+    const fetch = require("node-fetch");
+    
+    
+    
+    
+    fetch("https://api.canva.com/rest/v1/image-transformations", {
+    
+      method: "POST",
+    
+      headers: {
+    
+        "Authorization": "Bearer {token}",
+    
+        "Content-Type": "application/json",
+    
+      },
+    
+      body: JSON.stringify({
+    
+        "asset_id": "Msd59349ff",
+    
+        "name": "My Awesome Upload with the background removed",
+    
+        "transformations": [
+    
+          {
+    
+            "type": "background_removal"
+    
+          }
+    
+        ]
+    
+      }),
+    
+    })
+    
+      .then(async (response) => {
+    
+        const data = await response.json();
+    
+        console.log(data);
+    
+      })
+    
+      .catch(err => console.error(err));
+
+JS
+
+Copy
+    
+    
+    import java.io.IOException;
+    
+    import java.net.URI;
+    
+    import java.net.http.*;
+    
+    
+    
+    
+    public class ApiExample {
+    
+        public static void main(String[] args) throws IOException, InterruptedException {
+    
+            HttpRequest request = HttpRequest.newBuilder()
+    
+                .uri(URI.create("https://api.canva.com/rest/v1/image-transformations"))
+    
+                .header("Authorization", "Bearer {token}")
+    
+                .header("Content-Type", "application/json")
+    
+                .method("POST", HttpRequest.BodyPublishers.ofString("{\"asset_id\": \"Msd59349ff\", \"name\": \"My Awesome Upload with the background removed\", \"transformations\": [{\"type\": \"background_removal\"}]}"))
+    
+                .build();
+    
+    
+    
+    
+            HttpResponse<String> response = HttpClient.newHttpClient().send(
+    
+                request,
+    
+                HttpResponse.BodyHandlers.ofString()
+    
+            );
+    
+            System.out.println(response.body());
+    
+        }
+    
+    }
+
+JAVA
+
+Copy
+    
+    
+    import requests
+    
+    
+    
+    
+    headers = {
+    
+        "Authorization": "Bearer {token}",
+    
+        "Content-Type": "application/json"
+    
+    }
+    
+    
+    
+    
+    data = {
+    
+        "asset_id": "Msd59349ff",
+    
+        "name": "My Awesome Upload with the background removed",
+    
+        "transformations": [
+    
+            {
+    
+                "type": "background_removal"
+    
+            }
+    
+        ]
+    
+    }
+    
+    
+    
+    
+    response = requests.post("https://api.canva.com/rest/v1/image-transformations",
+    
+        headers=headers,
+    
+        json=data
+    
+    )
+    
+    print(response.json())
+
+PY
+
+Copy
+    
+    
+    using System.Net.Http;
+    
+    
+    
+    
+    var client = new HttpClient();
+    
+    var request = new HttpRequestMessage
+    
+    {
+    
+      Method = HttpMethod.Post,
+    
+      RequestUri = new Uri("https://api.canva.com/rest/v1/image-transformations"),
+    
+      Headers =
+    
+      {
+    
+        { "Authorization", "Bearer {token}" },
+    
+      },
+    
+      Content = new StringContent(
+    
+        "{\"asset_id\": \"Msd59349ff\", \"name\": \"My Awesome Upload with the background removed\", \"transformations\": [{\"type\": \"background_removal\"}]}",
+    
+        Encoding.UTF8,
+    
+        "application/json"
+    
+      ),
+    
+    };
+    
+    
+    
+    
+    using (var response = await client.SendAsync(request))
+    
+    {
+    
+      response.EnsureSuccessStatusCode();
+    
+      var body = await response.Content.ReadAsStringAsync();
+    
+      Console.WriteLine(body);
+    
+    };
+
+CSHARP
+
+Copy
+    
+    
+    package main
+    
+    
+    
+    
+    import (
+    
+    	"fmt"
+    
+    	"io"
+    
+    	"net/http"
+    
+    	"strings"
+    
+    )
+    
+    
+    
+    
+    func main() {
+    
+    	payload := strings.NewReader(`{
+    
+    	  "asset_id": "Msd59349ff",
+    
+    	  "name": "My Awesome Upload with the background removed",
+    
+    	  "transformations": [
+    
+    	    {
+    
+    	      "type": "background_removal"
+    
+    	    }
+    
+    	  ]
+    
+    	}`)
+    
+    
+    
+    
+    	url := "https://api.canva.com/rest/v1/image-transformations"
+    
+    	req, _ := http.NewRequest("POST", url, payload)
+    
+    	req.Header.Add("Authorization", "Bearer {token}")
+    
+    	req.Header.Add("Content-Type", "application/json")
+    
+    
+    
+    
+    	res, _ := http.DefaultClient.Do(req)
+    
+    	defer res.Body.Close()
+    
+    	body, _ := io.ReadAll(res.Body)
+    
+    	fmt.Println(string(body))
+    
+    }
+
+GO
+
+Copy
+    
+    
+    $curl = curl_init();
+    
+    curl_setopt_array($curl, array(
+    
+      CURLOPT_URL => "https://api.canva.com/rest/v1/image-transformations",
+    
+      CURLOPT_CUSTOMREQUEST => "POST",
+    
+      CURLOPT_RETURNTRANSFER => true,
+    
+      CURLOPT_HTTPHEADER => array(
+    
+        'Authorization: Bearer {token}',
+    
+        'Content-Type: application/json',
+    
+      ),
+    
+      CURLOPT_POSTFIELDS => json_encode([
+    
+        "asset_id" => "Msd59349ff",
+    
+        "name" => "My Awesome Upload with the background removed",
+    
+        "transformations" => [
+    
+          [
+    
+            "type" => "background_removal"
+    
+          ]
+    
+        ]
+    
+      ])
+    
+    ));
+    
+    
+    
+    
+    $response = curl_exec($curl);
+    
+    $err = curl_error($curl);
+    
+    curl_close($curl);
+    
+    
+    
+    
+    if (empty($err)) {
+    
+      echo $response;
+    
+    } else {
+    
+      echo "Error: " . $err;
+    
+    }
+
+PHP
+
+Copy
+    
+    
+    require 'net/http'
+    
+    require 'uri'
+    
+    
+    
+    
+    url = URI('https://api.canva.com/rest/v1/image-transformations')
+    
+    http = Net::HTTP.new(url.host, url.port)
+    
+    http.use_ssl = true
+    
+    
+    
+    
+    request = Net::HTTP::Post.new(url)
+    
+    request['Authorization'] = 'Bearer {token}'
+    
+    request['Content-Type'] = 'application/json'
+    
+    request.body = <<REQUEST_BODY
+    
+    {
+    
+      "asset_id": "Msd59349ff",
+    
+      "name": "My Awesome Upload with the background removed",
+    
+      "transformations": [
+    
+        {
+    
+          "type": "background_removal"
+    
+        }
+    
+      ]
+    
+    }
+    
+    REQUEST_BODY
+    
+    
+    
+    
+    response = http.request(request)
+    
+    puts response.read_body
+
+RUBY
+
+Copy
+
+## Success response
+
+Expand all
+
+If successful, the endpoint returns a `200` response with a JSON body with the following parameters:
+
+`job``ImageTransformationJob`
+
+Details about the image transformation job. If the job status is `success`, the job's `result` is present.
+
+Properties of **job**
+
+`status``string`
+
+The status of the image transformation job. A newly created job will be `in_progress` and will eventually become `success` or `failed`. A job may also complete immediately, returning `success` or `failed` from job creation. If the status is `success`, the job's `result` is present.
+
+**Available values:**
+
+  * `failed`
+  * `in_progress`
+  * `success`
+
+
+
+`id``string`
+
+Optional
+
+The image transformation job ID. Only present if the job status is `in_progress`. A job that completes immediately returns its `result` or `error` directly and has no ID to poll.
+
+`result``ImageTransformationJobResult`
+
+Optional
+
+Result of the image transformation job. Only present if the job status is `success`.
+
+Properties of **result**
+
+`asset``object`
+
+The new image asset produced by applying all of the requested transformations.
+
+Properties of **asset**
+
+`type``string`
+
+Type of an asset.
+
+**Available values:**
+
+  * `image`
+  * `video`
+
+
+
+`id``string`
+
+The ID of the asset.
+
+`name``string`
+
+The name of the asset.
+
+`tags``string[]`
+
+The user-facing tags attached to the asset. Users can add these tags to their uploaded assets, and they can search their uploaded assets in the Canva UI by searching for these tags. For information on how users use tags, see the [Canva Help Center page on asset tags⁠(opens in a new tab or window)](https://www.canva.com/help/add-edit-tags/).
+
+`created_at``integer`
+
+When the asset was added to Canva, as a Unix timestamp (in seconds since the Unix Epoch).
+
+`updated_at``integer`
+
+When the asset was last updated in Canva, as a Unix timestamp (in seconds since the Unix Epoch).
+
+`owner``TeamUserSummary`
+
+Metadata for the user, consisting of the User ID and Team ID.
+
+Properties of **owner**
+
+`user_id``string`
+
+The ID of the user.
+
+`team_id``string`
+
+The ID of the user's Canva Team.
+
+`thumbnail``Thumbnail`
+
+Optional
+
+A thumbnail image representing the object.
+
+Properties of **thumbnail**
+
+`width``integer`
+
+The width of the thumbnail image in pixels.
+
+`height``integer`
+
+The height of the thumbnail image in pixels.
+
+`url``string`
+
+A URL for retrieving the thumbnail image. This URL expires after 15 minutes. This URL includes a query string that's required for retrieving the thumbnail.
+
+`metadata``AssetMetadata`
+
+Optional
+
+Type-specific metadata for the asset.
+
+imageimage
+
+videovideo
+
+`type``string`
+
+**Available values:** The only valid value is `image`.
+
+`width``integer`
+
+Optional
+
+The width of the image in pixels.
+
+`height``integer`
+
+Optional
+
+The height of the image in pixels.
+
+`smart_tags``string[]`
+
+Optional
+
+AI-generated tags for the image.
+
+`type``string`
+
+**Available values:** The only valid value is `video`.
+
+`width``integer`
+
+The width of the video in pixels.
+
+`height``integer`
+
+The height of the video in pixels.
+
+`duration``integer`
+
+Optional
+
+The duration of the video in seconds.
+
+`import_status``ImportStatus`
+
+Deprecated
+
+The import status of the asset.
+
+Properties of **import_status**
+
+`state``string`
+
+Deprecated
+
+State of the import job for an uploaded asset.
+
+**Available values:**
+
+  * `failed`
+  * `in_progress`
+  * `success`
+
+
+
+`error``ImportError`
+
+Deprecated
+
+If the import fails, this object provides details about the error.
+
+Properties of **error**
+
+`message``string`
+
+Deprecated
+
+A human-readable description of what went wrong.
+
+`code``string`
+
+Deprecated
+
+A short string indicating why the upload failed. This field can be used to handle errors programmatically.
+
+**Available values:**
+
+  * `file_too_big`
+  * `import_failed`
+
+
+
+`error``ImageTransformationError`
+
+Optional
+
+If the image transformation job fails, this object provides details about the error. Only present if the job status is `failed`.
+
+Properties of **error**
+
+`code``string`
+
+Error code indicating what went wrong with the image transformation.
+
+**Available values:**
+
+  * `no_foreground_found`: No foreground subject was found in the image, so there is no background to remove.
+  * `quota_exceeded`: The user has run out of quota, such as their AI credit quota. The quota isn't necessarily specific to the requested transformations.
+  * `internal_error`: An unexpected error occurred during the transformation.
+
+
+
+`message``string`
+
+A human-readable description of what went wrong.
+
+## Example responses
+
+### In progress job
+    
+    
+    {
+    
+      "job": {
+    
+        "id": "450a76e7-f96f-43ae-9c37-0e1ce492ac72",
+    
+        "status": "in_progress"
+    
+      }
+    
+    }
+
+JSON
+
+Copy
+
+### Successfully completed job
+    
+    
+    {
+    
+      "job": {
+    
+        "status": "success",
+    
+        "result": {
+    
+          "asset": {
+    
+            "id": "Msd59349ff",
+    
+            "type": "image",
+    
+            "name": "My Awesome Upload with the background removed",
+    
+            "tags": [
+    
+              "image",
+    
+              "holiday",
+    
+              "best day ever"
+    
+            ],
+    
+            "owner": {
+    
+              "user_id": "oU123456AbCdE",
+    
+              "team_id": "oB123456AbCdE"
+    
+            },
+    
+            "created_at": 1377396000,
+    
+            "updated_at": 1692928800,
+    
+            "thumbnail": {
+    
+              "width": 595,
+    
+              "height": 335,
+    
+              "url": "https://document-export.canva.com/Vczz9/zF9vzVtdADc/2/thumbnail/0001.png?<query-string>"
+    
+            }
+    
+          }
+    
+        }
+    
+      }
+    
+    }
+
+JSON
+
+Copy
+
+### Failed job
+    
+    
+    {
+    
+      "job": {
+    
+        "status": "failed",
+    
+        "error": {
+    
+          "code": "no_foreground_found",
+    
+          "message": "No foreground subject was found in the image, so there is no background to remove."
+    
+        }
+    
+      }
+    
+    }
+
+JSON
+
+Copy
+
+## Error responses
+
+### 400 Bad Request
+
+`code``string`
+
+A short string indicating what failed. This field can be used to handle errors programmatically. For a complete list of error codes, see [Error responses](https://www.canva.dev/docs/apps/rest-apis/error-responses/).
+
+`message``string`
+
+A human-readable description of what went wrong.
+
+#### Example error responses
+
+##### The request field does not match expected format
+    
+    
+    {
+    
+      "code": "invalid_request",
+    
+      "message": "{fieldValue} does not match expected format for {fieldName}"
+    
+    }
+
+JSON
+
+Copy
+
+##### The asset is not an image asset
+    
+    
+    {
+    
+      "code": "unsupported_content_type",
+    
+      "message": "Asset is not an image asset: {assetId}"
+    
+    }
+
+JSON
+
+Copy
+
+##### The asset is still being uploaded, so it can't be transformed yet
+    
+    
+    {
+    
+      "code": "asset_not_ready",
+    
+      "message": "Asset is still being uploaded and has no image to transform yet: {assetId}"
+    
+    }
+
+JSON
+
+Copy
+
+### 401 Unauthorized
+
+`code``string`
+
+A short string indicating what failed. This field can be used to handle errors programmatically. For a complete list of error codes, see [Error responses](https://www.canva.dev/docs/apps/rest-apis/error-responses/).
+
+`message``string`
+
+A human-readable description of what went wrong.
+
+#### Example error responses
+
+##### The OAuth client credentials are invalid
+    
+    
+    {
+    
+      "code": "invalid_client",
+    
+      "message": "Client {clientId} not available"
+    
+    }
+
+JSON
+
+Copy
+
+##### Access token could not be decoded or signature could not be verified.
+    
+    
+    {
+    
+      "code": "invalid_access_token",
+    
+      "message": "Access token is invalid"
+    
+    }
+
+JSON
+
+Copy
+
+##### Client credentials or body auth are missing from the request
+    
+    
+    {
+    
+      "code": "invalid_client",
+    
+      "message": "Client credentials or body auth are missing from the request."
+    
+    }
+
+JSON
+
+Copy
+
+##### Authorization header has wrong number of components
+    
+    
+    {
+    
+      "code": "invalid_access_token",
+    
+      "message": "Malformed Authorization header: wrong number of components"
+    
+    }
+
+JSON
+
+Copy
+
+##### Authorization header has invalid mode
+    
+    
+    {
+    
+      "code": "invalid_access_token",
+    
+      "message": "Malformed Authorization header: invalid mode"
+    
+    }
+
+JSON
+
+Copy
+
+##### Token couldn't be introspected
+    
+    
+    {
+    
+      "code": "invalid_access_token",
+    
+      "message": "Token couldn't be introspected"
+    
+    }
+
+JSON
+
+Copy
+
+##### Access token is revoked
+    
+    
+    {
+    
+      "code": "revoked_access_token",
+    
+      "message": "Access token is revoked"
+    
+    }
+
+JSON
+
+Copy
+
+##### Missing Authorization header
+    
+    
+    {
+    
+      "code": "invalid_access_token",
+    
+      "message": "Missing Authorization header"
+    
+    }
+
+JSON
+
+Copy
+
+##### Malformed Authorization header
+    
+    
+    {
+    
+      "code": "invalid_access_token",
+    
+      "message": "Malformed Authorization header"
+    
+    }
+
+JSON
+
+Copy
+
+### 403 Forbidden
+
+`code``string`
+
+A short string indicating what failed. This field can be used to handle errors programmatically. For a complete list of error codes, see [Error responses](https://www.canva.dev/docs/apps/rest-apis/error-responses/).
+
+`message``string`
+
+A human-readable description of what went wrong.
+
+#### Example error response
+
+##### Image transformation is not enabled for this client
+    
+    
+    {
+    
+      "code": "permission_denied",
+    
+      "message": "Image transformation is not enabled"
+    
+    }
+
+JSON
+
+Copy
+
+### 404 Not Found
+
+`code``string`
+
+A short string indicating what failed. This field can be used to handle errors programmatically. For a complete list of error codes, see [Error responses](https://www.canva.dev/docs/apps/rest-apis/error-responses/).
+
+`message``string`
+
+A human-readable description of what went wrong.
+
+#### Example error response
+
+##### The asset was not found
+    
+    
+    {
+    
+      "code": "asset_not_found",
+    
+      "message": "Asset not found"
+    
+    }
+
+JSON
+
+Copy
+
+### 429 Credit Quota Exceeded
+
+`code``string`
+
+A short string indicating what failed. This field can be used to handle errors programmatically. For a complete list of error codes, see [Error responses](https://www.canva.dev/docs/apps/rest-apis/error-responses/).
+
+`message``string`
+
+A human-readable description of what went wrong.
+
+`quota_usage``object`
+
+Optional
+
+Credit quota usage at the time of the error. Not present if quota data is unavailable.
+
+#### Example error responses
+
+##### User has reached their credit quota limit
+    
+    
+    {
+    
+      "code": "credit_quota_exceeded",
+    
+      "message": "User has exceeded their credit quota",
+    
+      "quota_usage": {
+    
+        "used_percentage": 100,
+    
+        "resets_at": 1735689600,
+    
+        "using_bonus_credits": false,
+    
+        "upgrade_url": "https://www.canva.com/upgrade",
+    
+        "is_admin": false,
+    
+        "generation_pending": false
+    
+      }
+    
+    }
+
+JSON
+
+Copy
+
+##### User is in a cooldown period after heavy credit usage
+    
+    
+    {
+    
+      "code": "credit_quota_cooldown",
+    
+      "message": "Credit quota cooldown is active",
+    
+      "quota_usage": {
+    
+        "used_percentage": 100,
+    
+        "resets_at": 1735689600,
+    
+        "using_bonus_credits": false,
+    
+        "upgrade_url": "https://www.canva.com/upgrade",
+    
+        "cooldown_ends_at": 1767182400,
+    
+        "is_admin": false,
+    
+        "generation_pending": true
+    
+      }
+    
+    }
+
+JSON
+
+Copy
+
+## Try it out
+
+**This uses your live Canva data.**
+
+This is not a sandbox/playground. This form performs API requests against your account's actual live Canva data. Make sure that you understand what the request is doing, as well as the requirements for each parameter detailed above.
+
+### Step 1: Enter your access token
+
+To get started, generate an access token or provide your own below
+
+Generate an access token
+
+Access token

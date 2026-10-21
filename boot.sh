@@ -9,7 +9,6 @@ if [ ! -f "$UNIT_SRC" ]; then
 fi
 cp -f "$UNIT_SRC" /etc/systemd/system/canva-crawl.service
 systemctl daemon-reload
-systemctl enable canva-crawl.service
 DONE=$(python3 - <<'PY'
 import json
 try:
@@ -19,9 +18,11 @@ except Exception:
 PY
 )
 if [ "$DONE" = "True" ]; then
+  systemctl disable canva-crawl.service >/dev/null 2>&1 || true
   echo "canva crawl complete — nothing to resume."
   exit 0
 fi
+systemctl enable canva-crawl.service
 if systemctl is-active --quiet canva-crawl.service; then
   echo "canva-crawl.service already active."
 else

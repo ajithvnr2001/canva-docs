@@ -1,0 +1,76 @@
+---
+url: https://www.canva.dev/docs/apps/content/
+title: Content - Canva Developers SDK Documentation
+method: scrapling+scrapegraph
+fetched_at: 2026-10-21T13:55:29.258322+00:00
+---
+
+# Content - Canva Developers SDK Documentation
+
+> Source: https://www.canva.dev/docs/apps/content/
+
+[Overview](https://www.canva.dev/docs/apps/)
+
+Build your first app
+
+[Prerequisites](https://www.canva.dev/docs/apps/prerequisites/)[Quickstart](https://www.canva.dev/docs/apps/quickstart/)
+
+Starter resources
+
+[Starter kit](https://www.canva.dev/docs/apps/setting-up-starter-kit/)[Use a starter template](https://www.canva.dev/docs/apps/app-templates/)[Explore reference apps](https://www.canva.dev/docs/apps/reference-apps/)
+
+Learn
+
+Platform concepts
+
+[Apps](https://www.canva.dev/docs/apps/platform-concepts-apps/)[Designs](https://www.canva.dev/docs/apps/designs/)[Elements](https://www.canva.dev/docs/apps/elements/)[Content](https://www.canva.dev/docs/apps/content/)[Assets](https://www.canva.dev/docs/apps/uploading-assets/)[Folders](https://www.canva.dev/docs/apps/platform-concepts-folders/)[Teams, groups, and users](https://www.canva.dev/docs/apps/platform-concepts-teams-groups-and-users/)[Suspension](https://www.canva.dev/docs/apps/suspension/)
+
+[Recommended practices](https://www.canva.dev/docs/apps/rest-apis/recommended-practices/)
+
+# Content
+
+An introduction to content in the Canva Developers SDK.
+
+Copy page
+
+With apps inside Canva, users can add different types of _content_ to their designs.
+
+Content is text or media content, such as [image content](https://www.canva.dev/docs/apps/creating-images/) or [richtext content](https://www.canva.dev/docs/apps/creating-text/).
+
+Content is not the same as an [element](https://www.canva.dev/docs/apps/elements/). For example, in a Canva design, an image element contains image content that the user added. The "content" and "element" distinction matters because there are differences in how apps can operate on content versus how apps can operate on elements.
+
+If you're not aware of these differences, the behavior of the Canva Developers SDK may be confusing.
+
+## Content vs. elements
+
+An [element](https://www.canva.dev/docs/apps/elements/) is a container with a set of position and dimensions, while content is the underlying media or text that exists within that container. For example, image elements contain image content and video elements contain video content.
+
+**Content, however, does not always align with an element.**
+
+For example, a page background may contain image content, but a page background is not an image element. Similarly, table cells may have text content, but table cells are not text elements.
+
+If your app needs to operate on the text, image, or video content found within the elements of a design, see the following sections on [querying](https://www.canva.dev/docs/apps/content/#content-querying), [selection](https://www.canva.dev/docs/apps/content/#content-selection), and [traversal](https://www.canva.dev/docs/apps/content/#element-traversal), as well as the [Content Querying](https://www.canva.dev/docs/apps/design-guidelines/content-querying-api/) guidelines for more information. If instead your app needs to traverse only the elements of a design, see the [Elements](https://www.canva.dev/docs/apps/elements/) guide, and the [Design Editing](https://www.canva.dev/docs/apps/design-guidelines/design-editing-api/) guidelines for more information.
+
+## Content types
+
+Apps can interact with the following types of content:
+
+  * [Image content](https://www.canva.dev/docs/apps/creating-images/)
+  * [Text content](https://www.canva.dev/docs/apps/creating-text/), as plaintext or richtext
+  * [Video content](https://www.canva.dev/docs/apps/creating-videos/)
+
+
+
+The way in which an app can interact with content depends on the type of content. The exact details are explained on the linked pages.
+
+## Content querying
+
+Apps can query the content in a user's design. This allows the app to read and update the content of a design without needing to understand or traverse the structure of the design. To learn more, see [Querying content](https://www.canva.dev/docs/apps/querying/).
+
+## Content selection
+
+Apps can listen for the selection of content in a user's design. This allows the app to read and update the selected content, which is appropriate for more targeted operations. To learn more, see [Selection API](https://www.canva.dev/docs/apps/selection/).
+
+## Element traversal
+
+Apps can traverse the elements in a user's design. This allows the app to read and update the content of the elements, which means the app can understand the context in which the content is rendered. To learn more, see [Design Editing API](https://www.canva.dev/docs/apps/design-editing/).

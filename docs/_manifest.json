@@ -1,0 +1,31 @@
+{
+  "base": "https://www.canva.dev",
+  "sitemap": "https://www.canva.dev/sitemap.xml",
+  "sitemap_count": 771,
+  "total_seeds": 771,
+  "visited": 984,
+  "failed": 0,
+  "done": true,
+  "stats": {
+    "ok": 984,
+    "fail": 0,
+    "skipped_existing": 0,
+    "by_method": {
+      "scrapling+scrapegraph": 973,
+      "httpx+scrapegraph": 1,
+      "crawl4ai+scrapegraph": 10
+    },
+    "by_host": {
+      "www.canva.dev": 984
+    }
+  },
+  "elapsed_sec": 274.7,
+  "out_root": "/data/opencode/canva/docs",
+  "tools": [
+    "scrapling (Fetcher)",
+    "crawl4ai (AsyncWebCrawler fallback)",
+    "scrapegraph-ai (cleanup_html/convert_to_md)",
+    "httpx (last resort)"
+  ],
+  "generated_at": "2026-10-21T13:59:03.696195+00:00"
+}

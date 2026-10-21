@@ -58,3 +58,10 @@ Crash-safe: every page is written immediately (`docs/…md` + `docs/_meta/…jso
   into `/data/opencode/boot-all.sh` so a reboot or reprovision restarts it automatically.
 
 ## Results (verified 2026-10-21)
+
+- **984 pages** crawled end to end in **274.7 s** with **0 failures**
+  (973 via Scrapling, 10 via Crawl4AI JS fallback, 1 via httpx)
+- 771 in-scope sitemap URLs plus 213 extra pages found by link discovery
+- ~23 MB Markdown mirror with 984 per-page metadata records
+- Sections: Apps SDK + REST API reference, Admin API, Audit Logs, Button (JS/HTML/Android/iOS),
+  Print partnerships, SCIM, Extensions, Flourish Charts, Agents/Connect
