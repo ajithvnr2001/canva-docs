@@ -1,11 +1,11 @@
 {
   "date": "2026-10-21",
-  "at": "2026-10-21T14:04:42.823098+00:00",
+  "at": "2026-10-21T14:08:35.583956+00:00",
   "new": 0,
   "stale_total": 0,
   "refreshed_stale": 0,
-  "sitemap_missing": 213,
-  "rotated": 213,
-  "targets": 213,
-  "total_index": 984
+  "sitemap_missing": 211,
+  "rotated": 211,
+  "targets": 1,
+  "total_index": 982
 }

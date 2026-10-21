@@ -86,16 +86,25 @@ print("[scrapling] Fetcher loaded:", Fetcher)
 
 # ---------- Crawl4AI (lazy, only for fallback) ----------
 _crawler = None
+_crawler_lock = asyncio.Lock()
+_browser_sem = asyncio.Semaphore(3)   # cap concurrent browser pages
+
 async def get_crawler():
     global _crawler
     if _crawler is None:
-        from crawl4ai import AsyncWebCrawler, CrawlerRunConfig, CacheMode  # noqa
-        from crawl4ai.async_webcrawler import BrowserConfig
-        browser_cfg = BrowserConfig(headless=True, verbose=False)
-        _crawler = AsyncWebCrawler(config=browser_cfg)
-        await _crawler.start()
-        print("[crawl4ai] AsyncWebCrawler started")
+        async with _crawler_lock:
+            if _crawler is None:
+                from crawl4ai import AsyncWebCrawler, CrawlerRunConfig, CacheMode  # noqa
+                from crawl4ai.async_webcrawler import BrowserConfig
+                browser_cfg = BrowserConfig(headless=True, verbose=False)
+                crawler = AsyncWebCrawler(config=browser_cfg)
+                await crawler.start()
+                _crawler = crawler
+                print("[crawl4ai] AsyncWebCrawler started")
     return _crawler
+
+def oneline(s, n=300):
+    return re.sub(r"\s+", " ", str(s)).strip()[:n]
 
 # ---------- scope ----------
 MAIN_HOST = "www.canva.dev"
@@ -131,6 +140,9 @@ def normalize_url(u, base=BASE_URL):
     # robots.txt disallows: /docs/print/*, /example-assets/*, storybook/playroom iframes,
     # /*/llms.txt, /*/*.md — skip all of them.
     if "iframe.html" in low or low.endswith(".md") or low.endswith("llms.txt"):
+        return None
+    # interactive Storybook demos (no textual docs; SPA renders an error shell when static)
+    if "/storybook/" in low or low.endswith("/storybook"):
         return None
     if any(path.startswith(x) for x in EXCLUDED_PREFIXES):
         return None
@@ -241,7 +253,8 @@ async def crawl4ai_fetch(url):
         wait_until="domcontentloaded",
         page_timeout=45000,
     )
-    res = await asyncio.wait_for(crawler.arun(url=url, config=cfg), timeout=75)
+    async with _browser_sem:
+        res = await asyncio.wait_for(crawler.arun(url=url, config=cfg), timeout=75)
     if not res or not res.success:
         raise RuntimeError(f"crawl4ai failed: {getattr(res, 'error_message', 'unknown')}")
     html = res.html or ""
@@ -277,7 +290,8 @@ async def fetch_one(url):
         md = header + md_body
         if len(md.strip()) < 600:
             raise RuntimeError(f"scrapling thin content ({len(md)} chars), fallback to crawl4ai")
-        return {"url": url, "title": title, "html": html, "markdown": md, "links": r["links"], "method": "scrapling+scrapegraph"}
+        return {"url": url, "title": title, "html": html, "markdown": md, "links": r["links"],
+                "method": "scrapling+scrapegraph"}
     except Exception as e1:
         last_err = f"scrapling: {e1}"
     # 2) Crawl4AI
@@ -299,7 +313,8 @@ async def fetch_one(url):
         md = header + (md_best or "")
         if len(md.strip()) < 200:
             raise RuntimeError(f"crawl4ai thin content: {last_err}")
-        return {"url": url, "title": title, "html": html, "markdown": md, "links": r["links"], "method": f"crawl4ai+scrapegraph ({last_err})"}
+        return {"url": url, "title": title, "html": html, "markdown": md, "links": r["links"],
+                "method": "crawl4ai+scrapegraph", "fallback": oneline(last_err)}
     except Exception as e2:
         last_err2 = f"{last_err} | crawl4ai: {e2}"
     # 3) httpx
@@ -315,7 +330,8 @@ async def fetch_one(url):
             md = header + md_body
             soup = BeautifulSoup(html, "lxml")
             links = [a.get("href", "") for a in soup.find_all("a", href=True)]
-            return {"url": url, "title": title, "html": html, "markdown": md, "links": links, "method": f"httpx+scrapegraph ({last_err2})"}
+            return {"url": url, "title": title, "html": html, "markdown": md, "links": links,
+                    "method": "httpx+scrapegraph", "fallback": oneline(last_err2)}
     except Exception as e3:
         raise RuntimeError(f"all fetchers failed for {url}: {last_err2} | httpx: {e3}")
 
@@ -427,6 +443,8 @@ async def main(max_pages=10000, concurrency=10):
                                 "method": data["method"], "fetched_at": datetime.now(timezone.utc).isoformat(),
                                 "html_len": len(data.get("html", "")), "md_len": len(data.get("markdown", "")),
                                 "depth": depth}
+                        if data.get("fallback"):
+                            meta["fallback"] = data["fallback"]
                         meta_path.write_text(json.dumps(meta, indent=2), encoding="utf-8")
                         visited[url] = {"file": str(rel), "title": data["title"], "method": data["method"]}
                         idx_f.write(json.dumps({"url": url, "file": str(rel), "title": data["title"], "method": data["method"]}) + "\n")

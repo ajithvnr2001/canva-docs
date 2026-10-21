@@ -11,7 +11,8 @@ Crawls **https://www.canva.dev/docs/** end to end (all documented surfaces) into
 - **Flourish Charts** (`/opensource/flourish-charts/…`), plus `/agents/`, `/developers/`, `/connect/`
 
 Scope is robots-aware: `/docs/print/*`, `/blog/*`, `/example-assets/*`, raw `*.md`/`llms.txt`
-exports and storybook/playroom iframes are excluded.
+exports, storybook/playroom iframes and interactive `/storybook/` demos (SPA shells with
+no textual docs) are excluded.
 
 **Last verified: 2026-10-21**
 
@@ -67,9 +68,10 @@ Crash-safe: every page is written immediately (`docs/…md` + `docs/_meta/…jso
 
 ## Results (verified 2026-10-21)
 
-- **984 pages** crawled end to end in **274.7 s** with **0 failures**
-  (973 via Scrapling, 10 via Crawl4AI JS fallback, 1 via httpx)
-- 771 in-scope sitemap URLs plus 213 extra pages found by link discovery
-- ~23 MB Markdown mirror with 984 per-page metadata records
+- **982 pages** crawled end to end in **274.7 s** with **0 failures**
+  (973 via Scrapling, 8 via Crawl4AI JS fallback, 1 via httpx)
+- 771 in-scope sitemap URLs plus 213 link-discovered pages (211 retained after
+  dropping two interactive Storybook SPA shells)
+- ~23 MB Markdown mirror with 982 per-page metadata records
 - Sections: Apps SDK + REST API reference, Admin API, Audit Logs, Button (JS/HTML/Android/iOS),
   Print partnerships, SCIM, Extensions, Flourish Charts, Agents/Connect

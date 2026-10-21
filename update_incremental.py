@@ -187,12 +187,19 @@ async def main():
                 verbatim = datetime.now(timezone.utc).isoformat()
                 rel = C.url_to_relpath(url)
                 fp = DOCS / rel
+                mr = pathlib.Path("_meta") / rel.with_suffix(".json")
                 old_body = None
                 if fp.exists():
                     try:
                         old_body = body_of(fp.read_text(encoding="utf-8"))
                     except Exception:
                         old_body = None
+                old_method = ""
+                try:
+                    if (DOCS / mr).exists():
+                        old_method = json.loads((DOCS / mr).read_text()).get("method", "") or ""
+                except Exception:
+                    pass
                 if old_body is not None and old_body.strip() == data["markdown"].strip():
                     verified[url] = verbatim
                     vs[url] = vs.get(url, {"file": str(rel), "title": data["title"], "method": data["method"]})
@@ -200,14 +207,27 @@ async def main():
                     ok += 1
                     print(f"[same] {url}")
                     return
+                # never replace a JS-rendered page with a much thinner last-resort fetch
+                if (old_body is not None and data["method"].startswith("httpx")
+                        and old_method and not old_method.startswith("httpx")
+                        and len(old_body.strip()) > 400
+                        and len(data["markdown"].strip()) < len(old_body.strip()) * 0.8):
+                    verified[url] = verbatim
+                    vs[url] = vs.get(url, {"file": str(rel), "title": data["title"], "method": old_method})
+                    same += 1
+                    ok += 1
+                    print(f"[skip-downgrade] {url} (httpx {len(data['markdown'].strip())}B vs {len(old_body.strip())}B)")
+                    return
                 fp.parent.mkdir(parents=True, exist_ok=True)
                 fm = (f"---\nurl: {url}\ntitle: {json.dumps(data['title'])[1:-1]}\n"
                       f"method: {data['method']}\nfetched_at: {verbatim}\n---\n\n")
                 fp.write_text(fm + data["markdown"], encoding="utf-8")
-                mr = pathlib.Path("_meta") / rel.with_suffix(".json")
                 (DOCS / mr).parent.mkdir(parents=True, exist_ok=True)
-                (DOCS / mr).write_text(json.dumps({"url": url, "file": str(rel), "title": data["title"],
-                                                   "method": data["method"], "fetched_at": verbatim}, indent=2))
+                meta = {"url": url, "file": str(rel), "title": data["title"],
+                        "method": data["method"], "fetched_at": verbatim}
+                if data.get("fallback"):
+                    meta["fallback"] = data["fallback"]
+                (DOCS / mr).write_text(json.dumps(meta, indent=2))
                 vs[url] = {"file": str(rel), "title": data["title"], "method": data["method"]}
                 row = {"url": url, "file": str(rel), "title": data["title"], "method": data["method"]}
                 if url in pos:
