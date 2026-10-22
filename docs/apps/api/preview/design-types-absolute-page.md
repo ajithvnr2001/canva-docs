@@ -2,7 +2,7 @@
 url: https://www.canva.dev/docs/apps/api/preview/design-types-absolute-page/
 title: AbsolutePage - Canva Developers SDK Documentation
 method: scrapling+scrapegraph
-fetched_at: 2026-10-21T13:58:35.451703+00:00
+fetched_at: 2026-10-22T14:42:16.335768+00:00
 ---
 
 # AbsolutePage - Canva Developers SDK Documentation
@@ -32,8 +32,6 @@ Platform concepts
 API reference for the AbsolutePage type.
 
 Copy page
-
-**This API is a preview**. Preview APIs are unstable and may change without warning. You can't release public apps using this API until it's stable.
 
 A page with either fixed or unbounded dimensions.
 

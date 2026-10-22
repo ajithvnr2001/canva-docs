@@ -2,7 +2,7 @@
 url: https://www.canva.dev/docs/apps/api/preview/design-types-absolute-element/
 title: AbsoluteElement - Canva Developers SDK Documentation
 method: scrapling+scrapegraph
-fetched_at: 2026-10-21T13:58:42.524117+00:00
+fetched_at: 2026-10-22T14:42:17.164647+00:00
 ---
 
 # AbsoluteElement - Canva Developers SDK Documentation
@@ -32,8 +32,6 @@ Platform concepts
 API reference for the AbsoluteElement type.
 
 Copy page
-
-**This API is a preview**. Preview APIs are unstable and may change without warning. You can't release public apps using this API until it's stable.
 
 An element that can exist on an absolute page.
 
@@ -92,14 +90,6 @@ A width, in pixels.
 RequiredView type definition
 
 A height, in pixels.
-
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
 
 `locked``boolean`Read-only
 
@@ -217,14 +207,6 @@ RequiredView type definition
 
 A height, in pixels.
 
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
-
 `locked``boolean`Read-only
 
 RequiredView type definition
@@ -309,14 +291,6 @@ RequiredView type definition
 
 A height, in pixels.
 
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
-
 `locked``boolean`Read-only
 
 RequiredView type definition
@@ -400,14 +374,6 @@ A width, in pixels.
 RequiredView type definition
 
 A height, in pixels.
-
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
 
 `locked``boolean`Read-only
 
@@ -1835,14 +1801,6 @@ RequiredView type definition
 
 A height, in pixels.
 
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
-
 `locked``boolean`Read-only
 
 RequiredView type definition
@@ -1916,14 +1874,6 @@ A width, in pixels.
 RequiredView type definition
 
 A height, in pixels.
-
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
 
 `locked``boolean`Read-only
 

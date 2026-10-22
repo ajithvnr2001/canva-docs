@@ -2,7 +2,7 @@
 url: https://www.canva.dev/docs/apps/api/preview/design-changelog/
 title: Changelog for @canva/design@beta - Beta API reference - Canva Developers SDK Documentation
 method: scrapling+scrapegraph
-fetched_at: 2026-10-21T13:55:10.317801+00:00
+fetched_at: 2026-10-22T14:42:08.977944+00:00
 ---
 
 # Changelog for @canva/design@beta - Beta API reference - Canva Developers SDK Documentation
@@ -90,6 +90,14 @@ Error: Test
 The latest changes for the Canva Apps SDK @canva/design@beta package.
 
 Copy page
+
+## 2.13.2-beta.0 - 2026-10-21
+
+### Removed
+
+  * **Breaking:** Removed element ID from the Design Editing API.
+
+
 
 ## 2.13.1-beta.2 - 2026-09-18
 

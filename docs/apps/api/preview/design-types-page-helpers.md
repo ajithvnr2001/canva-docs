@@ -2,7 +2,7 @@
 url: https://www.canva.dev/docs/apps/api/preview/design-types-page-helpers/
 title: PageHelpers - Canva Developers SDK Documentation
 method: scrapling+scrapegraph
-fetched_at: 2026-10-21T13:58:21.424948+00:00
+fetched_at: 2026-10-22T14:42:14.310350+00:00
 ---
 
 # PageHelpers - Canva Developers SDK Documentation
@@ -112,14 +112,6 @@ A width, in pixels.
 RequiredView type definition
 
 A height, in pixels.
-
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
 
 `locked``boolean`Read-only
 
@@ -237,14 +229,6 @@ RequiredView type definition
 
 A height, in pixels.
 
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
-
 `locked``boolean`Read-only
 
 RequiredView type definition
@@ -328,14 +312,6 @@ A width, in pixels.
 RequiredView type definition
 
 A height, in pixels.
-
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
 
 `locked``boolean`Read-only
 
@@ -1763,14 +1739,6 @@ RequiredView type definition
 
 A height, in pixels.
 
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
-
 `locked``boolean`Read-only
 
 RequiredView type definition
@@ -1856,12 +1824,6 @@ A width, in pixels.
 View type definition
 
 A height, in pixels.
-
-`id``ElementId`Read-only
-
-View type definition
-
-The ID of the element.
 
 `locked``boolean`Read-only
 
@@ -1968,14 +1930,6 @@ A width, in pixels.
 RequiredView type definition
 
 A height, in pixels.
-
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
 
 `locked``boolean`Read-only
 
@@ -3453,14 +3407,6 @@ RequiredView type definition
 
 A height, in pixels.
 
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
-
 `locked``boolean`Read-only
 
 RequiredView type definition
@@ -3556,14 +3502,6 @@ A width, in pixels.
 RequiredView type definition
 
 A height, in pixels.
-
-`id``ElementId`Read-only
-
-Required
-
-View type definition
-
-The ID of the element.
 
 `locked``boolean`Read-only
 

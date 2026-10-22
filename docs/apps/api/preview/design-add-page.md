@@ -2,7 +2,7 @@
 url: https://www.canva.dev/docs/apps/api/preview/design-add-page/
 title: addPage - Beta API reference - Canva Developers SDK Documentation
 method: scrapling+scrapegraph
-fetched_at: 2026-10-21T13:58:11.224454+00:00
+fetched_at: 2026-10-22T14:42:11.897037+00:00
 ---
 
 # addPage - Beta API reference - Canva Developers SDK Documentation
@@ -299,41 +299,6 @@ Copy
          width: 300,
     
          height: 300,
-    
-      },
-    
-    });
-
-TYPESCRIPT
-
-Copy
-
-### Insert a page before an existing page
-    
-    
-    import { addPage, getCurrentPageMetadata } from "@canva/design";
-    
-    
-    
-    
-    const currentPage = await getCurrentPageMetadata();
-    
-    if (currentPage.type !== 'absolute' || currentPage.id == null) {
-    
-      throw new Error('Current page does not have an ID');
-    
-    }
-    
-    
-    
-    
-    await addPage({
-    
-      insertAt: {
-    
-        mode: 'before_target',
-    
-        targetPageId: currentPage.id,
     
       },
     
@@ -2874,13 +2839,48 @@ View type definition
 The position to insert the new page at.
 
   * Omit this property to insert the page immediately after the current page.
-  * `'before'` and `'after'` are relative to the current page.
+  * `'before_current'` and `'after_current'` insert before or after the current page, `'after_current'` behaves as though `insertAt` was omitted.
   * `'before_first_page'` and `'after_last_page'` insert at the start or end of the design.
   * `'before_target'` and `'after_target'` require `targetPageId`.
 
 
 
 **Default value** : `Inserts after the currently selected page.`
+
+**Example: Insert a page before an existing page**
+    
+    
+     import { addPage, getCurrentPageMetadata } from "@canva/design";
+    
+    
+    
+    
+    const currentPage = await getCurrentPageMetadata();
+    
+    if (currentPage.type !== 'absolute' || currentPage.id == null) {
+    
+      throw new Error('Current page does not have an ID');
+    
+    }
+    
+    
+    
+    
+    await addPage({
+    
+      insertAt: {
+    
+        mode: 'before_target',
+    
+        targetPageId: currentPage.id,
+    
+      },
+    
+    });
+
+TYPESCRIPT
+
+Copy
 
 PageInsertAtCurrent
 
