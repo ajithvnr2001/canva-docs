@@ -2,7 +2,7 @@
 url: https://www.canva.dev/docs/apps/rest-apis/reference/generations/
 title: Generations - Canva REST API reference - Canva Developers SDK Documentation
 method: scrapling+scrapegraph
-fetched_at: 2026-10-21T13:56:33.525253+00:00
+fetched_at: 2026-10-23T14:28:59.400904+00:00
 ---
 
 # Generations - Canva REST API reference - Canva Developers SDK Documentation
@@ -117,6 +117,7 @@ You can choose the model that generates the image with the `model` parameter. If
 
 Model| Value| Status  
 ---|---|---  
+CRAFT-1 2K| `craft_v1_2k`| Available  
 Lucid Origin| `lucid_origin`| Available  
 Z Image Turbo| `z_image_turbo`| Available  
   

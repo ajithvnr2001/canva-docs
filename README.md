@@ -11,7 +11,7 @@ the rest of the site:
 - **Solutions** (`/solutions/…`, 4 pages), **Agents** (`/agents/`), **CLI** auth pages
   (`/cli/…`), **Print partnerships** (`/docs/print-partnerships/…`)
 
-**Last verified: 2026-10-22**
+**Last verified: 2026-10-23**
 
 ## Scope & exceptions
 
@@ -116,7 +116,7 @@ section-hub link graph, full-mirror link sweep (**1,377** internal URLs → 0 li
 and search-engine / Common Crawl spot checks (only redirect aliases surfaced).
 Re-run anytime: `python3 audit_links.py`.
 
-## Results (verified 2026-10-22)
+## Results (verified 2026-10-23)
 
 - **1,319 pages** in the mirror with **0 failures**
   (1,317 via Scrapling, 2 via Crawl4AI JS fallback)
